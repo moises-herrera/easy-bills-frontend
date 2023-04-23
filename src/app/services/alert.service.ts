@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Message, MessageService } from 'primeng/api';
 
 /**
@@ -8,8 +8,8 @@ import { Message, MessageService } from 'primeng/api';
   providedIn: 'root'
 })
 export class AlertService {
-
-  constructor(private messageService: MessageService) { }
+  /** Message service. */
+  private _messageService = inject(MessageService);
 
   /**
    * Display a message.
@@ -17,6 +17,6 @@ export class AlertService {
    * @param message Message data.
    */
   displayMessage(message: Message): void {
-    this.messageService.add(message);
+    this._messageService.add(message);
   }
 }
