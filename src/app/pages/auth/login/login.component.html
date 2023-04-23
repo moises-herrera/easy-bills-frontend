@@ -1,0 +1,23 @@
+<section class="auth-section">
+  <form [formGroup]="loginForm" class="form-auth">
+    <h4 class="form-title">Login</h4>
+
+    <div class="form-control">
+      <label htmlFor="email">Email</label>
+      <input formControlName="email" type="email" pInputText />
+    </div>
+
+    <div class="form-control">
+      <label htmlFor="password">Contraseña</label>
+      <input formControlName="password" type="password" pInputText />
+    </div>
+
+    <button
+      type="submit"
+      pButton
+      label="Login"
+      class="form-button p-button-rounded p-button-info"
+      [disabled]="loginForm.invalid"
+    ></button>
+  </form>
+</section>
