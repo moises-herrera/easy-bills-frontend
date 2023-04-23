@@ -1,5 +1,9 @@
 <section class="auth-section">
-  <form [formGroup]="registerForm" (ngSubmit)="registerUser()" class="form-auth">
+  <form
+    [formGroup]="registerForm"
+    (ngSubmit)="registerUser()"
+    class="form-auth"
+  >
     <h4 class="form-title">Registrarse</h4>
 
     <div class="form-control">
@@ -19,7 +23,24 @@
 
     <div class="form-control">
       <label htmlFor="password">Contraseña</label>
-      <input formControlName="password" type="password" pInputText />
+      <p-password
+        formControlName="password"
+        [toggleMask]="true"
+        [weakLabel]="'Débil'"
+        [mediumLabel]="'Medio'"
+        [strongLabel]="'Fuerte'"
+        [promptLabel]="'Ingresa una contraseña'"
+      >
+        <ng-template pTemplate="footer">
+          <p class="mt-2">Sugerencias</p>
+          <ul class="pl-2 ml-2 mt-0 leading-6 list-disc">
+            <li>Al menos una letra minúscula</li>
+            <li>Al menos una letra mayúscula</li>
+            <li>Al menos un número</li>
+            <li>Mínimo 8 carácteres</li>
+          </ul>
+        </ng-template>
+      </p-password>
     </div>
 
     <div class="form-control">
@@ -34,5 +55,13 @@
       class="form-button p-button-rounded p-button-info"
       [disabled]="registerForm.invalid"
     ></button>
+
+    <div>
+      <hr />
+      <p class="mt-5 text-center">
+        ¿Ya tienes una cuenta?
+        <a class="text-blue-600" routerLink="/auth/login">Iniciar sesión</a>
+      </p>
+    </div>
   </form>
 </section>

@@ -2,6 +2,12 @@ import { FormGroup } from '@angular/forms';
 
 /** Represents all the common methods to validate a form. */
 export class FormValidator {
+  /** Pattern to validate an email. */
+  static readonly emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,7}$';
+
+  /** Pattern to validate a password. */
+  static readonly passwordPattern = '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?!.* ).{6,}$';
+
   /**
    * Validate that the fields are equal.
    *

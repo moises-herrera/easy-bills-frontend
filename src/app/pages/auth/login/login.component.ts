@@ -12,6 +12,8 @@ import { UserService } from 'src/app/services/user.service';
 import { AlertService } from 'src/app/services/alert.service';
 import { MessagesModule } from 'primeng/messages';
 import { RouterModule } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { FormValidator } from 'src/helpers';
 
 /**
  * Login form page.
@@ -39,7 +41,7 @@ export class LoginComponent {
 
   /** Login form. */
   loginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.pattern(FormValidator.emailPattern)]],
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
@@ -53,10 +55,11 @@ export class LoginComponent {
           summary: 'Sesión iniciada exitosamente',
         });
       },
-      error: () => {
+      error: (err: unknown) => {
         this._alertService.displayMessage({
           severity: 'error',
-          summary: 'Ha ocurrido un error',
+          summary:
+            (err as HttpErrorResponse)?.error?.error || 'Ha ocurrido un error',
         });
       },
     });

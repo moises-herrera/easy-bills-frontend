@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  AbstractControlOptions,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
@@ -11,8 +12,11 @@ import { ButtonModule } from 'primeng/button';
 import { UserService } from 'src/app/services/user.service';
 import { AlertService } from 'src/app/services/alert.service';
 import { MessagesModule } from 'primeng/messages';
+import { PasswordModule } from 'primeng/password';
+import { TooltipModule } from 'primeng/tooltip';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormValidator } from 'src/helpers';
+import { RouterModule } from '@angular/router';
 
 /**
  * Sign up form.
@@ -22,10 +26,13 @@ import { FormValidator } from 'src/helpers';
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     ReactiveFormsModule,
     InputTextModule,
     ButtonModule,
     MessagesModule,
+    PasswordModule,
+    TooltipModule
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
@@ -42,16 +49,28 @@ export class RegisterComponent {
     {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(FormValidator.emailPattern),
+        ],
+      ],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(FormValidator.passwordPattern),
+        ],
+      ],
       confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
     },
     {
       validators: FormValidator.validateEqualFields(
         'password',
         'confirmPassword'
-      )
-    }
+      ),
+    } as AbstractControlOptions
   );
 
   constructor(private fb: FormBuilder) {}

@@ -35,3 +35,7 @@ html, body {
 .alert-message {
   @apply absolute w-[380px] right-4 bottom-0;
 }
+
+.p-password, .p-password input {
+  width: 100% !important;
+}
