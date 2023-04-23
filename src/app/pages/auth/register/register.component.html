@@ -1,0 +1,33 @@
+<section class="auth-section">
+  <form [formGroup]="registerForm" (ngSubmit)="registerUser()" class="form-auth">
+    <h4 class="form-title">Registrarse</h4>
+
+    <div class="form-control">
+      <label htmlFor="firstName">Nombre</label>
+      <input formControlName="firstName" type="text" pInputText />
+    </div>
+
+    <div class="form-control">
+      <label htmlFor="lastName">Apellido</label>
+      <input formControlName="lastName" type="text" pInputText />
+    </div>
+
+    <div class="form-control">
+      <label htmlFor="email">Email</label>
+      <input formControlName="email" type="email" pInputText />
+    </div>
+
+    <div class="form-control">
+      <label htmlFor="password">Contraseña</label>
+      <input formControlName="password" type="password" pInputText />
+    </div>
+
+    <button
+      type="submit"
+      pButton
+      label="Registrarse"
+      class="form-button p-button-rounded p-button-info"
+      [disabled]="registerForm.invalid"
+    ></button>
+  </form>
+</section>
