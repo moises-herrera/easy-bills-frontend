@@ -2,3 +2,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+
+html, body {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.auth-section {
+  @apply w-full h-screen bg-blue-600 flex justify-center items-center;
+}
+
+.form-auth {
+  @apply bg-white rounded-lg p-10 w-[400px] m-auto flex flex-col justify-center gap-5;
+}
+
+.form-title {
+  @apply text-center text-2xl font-bold mb-4;
+}
+
+.form-control {
+  @apply flex flex-col gap-1;
+}
+
+.form-button {
+  @apply mt-5;
+}
