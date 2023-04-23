@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginUser, RegisterUser, LoginUserResponse } from 'src/models';
 
@@ -16,6 +16,9 @@ export class UserService {
   /** Http client. */
   private _http = inject(HttpClient);
 
+  /** The access token for API authentication. */
+  accessToken!: string;
+
   /**
    * Register a user.
    *
@@ -23,7 +26,9 @@ export class UserService {
    * @returns An empty observable.
    */
   registerUser(user: RegisterUser): Observable<void> {
-    return this._http.post<void>(`${baseUrl}/users`, user);
+    return this._http
+      .post<void>(`${baseUrl}/users`, user)
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 
   /**
@@ -33,6 +38,14 @@ export class UserService {
    * @returns Login response model.
    */
   loginUser(user: LoginUser): Observable<LoginUserResponse> {
-    return this._http.post<LoginUserResponse>(`${baseUrl}/users/login`, user);
+    return this._http
+      .post<LoginUserResponse>(`${baseUrl}/users/login`, user)
+      .pipe(
+        tap(({ user, accessToken }) => {
+          this.accessToken = accessToken;
+          localStorage.setItem('user', JSON.stringify(user));
+        }),
+        shareReplay({ bufferSize: 1, refCount: true })
+      );
   }
 }

@@ -13,7 +13,7 @@ html, body {
 }
 
 .auth-section {
-  @apply w-full h-screen bg-blue-600 flex justify-center items-center;
+  @apply w-full h-screen bg-blue-600 flex flex-col justify-center items-center;
 }
 
 .form-auth {
@@ -30,4 +30,8 @@ html, body {
 
 .form-button {
   @apply mt-5;
+}
+
+.alert-message {
+  @apply absolute w-[380px] right-4 bottom-0;
 }
