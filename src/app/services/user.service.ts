@@ -48,4 +48,14 @@ export class UserService {
         shareReplay({ bufferSize: 1, refCount: true })
       );
   }
+
+  /**
+   * Send an email confirmation to the user email address.
+   *
+   * @param userEmail User's email.
+   * @returns An empty observable.
+   */
+  sendEmailConfirmation(userEmail: string): Observable<void> {
+    return this._http.post<void>(`${baseUrl}/email/confirm-email`, { userEmail });
+  }
 }

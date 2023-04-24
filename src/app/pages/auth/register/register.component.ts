@@ -16,7 +16,8 @@ import { PasswordModule } from 'primeng/password';
 import { TooltipModule } from 'primeng/tooltip';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormValidator } from 'src/helpers';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { switchMap } from 'rxjs';
 
 /**
  * Sign up form.
@@ -32,7 +33,7 @@ import { RouterModule } from '@angular/router';
     ButtonModule,
     MessagesModule,
     PasswordModule,
-    TooltipModule
+    TooltipModule,
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
@@ -44,6 +45,9 @@ export class RegisterComponent {
   /** Alert service. */
   private _alertService = inject(AlertService);
 
+  /** Router. */
+  private _router = inject(Router);
+
   /** Register form group. */
   registerForm: FormGroup = this.fb.group(
     {
@@ -51,10 +55,7 @@ export class RegisterComponent {
       lastName: ['', Validators.required],
       email: [
         '',
-        [
-          Validators.required,
-          Validators.pattern(FormValidator.emailPattern),
-        ],
+        [Validators.required, Validators.pattern(FormValidator.emailPattern)],
       ],
       password: [
         '',
@@ -79,20 +80,36 @@ export class RegisterComponent {
    * Register user.
    */
   registerUser(): void {
-    this._userService.registerUser(this.registerForm.value).subscribe({
-      next: () => {
-        this._alertService.displayMessage({
-          severity: 'success',
-          summary: 'Cuenta creada exitosamente',
-        });
-      },
-      error: (err: unknown) => {
-        this._alertService.displayMessage({
-          severity: 'error',
-          summary:
-            (err as HttpErrorResponse)?.error?.error || 'Ha ocurrido un error',
-        });
-      },
-    });
+    this._userService
+      .registerUser(this.registerForm.value)
+      .pipe(
+        switchMap(() => {
+          this._alertService.displayMessage({
+            severity: 'success',
+            summary: 'Cuenta creada exitosamente',
+          });
+
+          return this._userService.sendEmailConfirmation(
+            this.registerForm.value.email
+          );
+        })
+      )
+      .subscribe({
+        next: () => {
+          this._router.navigateByUrl('/auth/confirm-email', {
+            state: {
+              email: this.registerForm.value.email,
+            },
+          });
+        },
+        error: (err: unknown) => {
+          this._alertService.displayMessage({
+            severity: 'error',
+            summary:
+              (err as HttpErrorResponse)?.error?.error ||
+              'Ha ocurrido un error',
+          });
+        },
+      });
   }
 }
