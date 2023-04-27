@@ -22,6 +22,9 @@ export class UserService {
   /** Http client. */
   private _http = inject(HttpClient);
 
+  /** Current access token life time. */
+  currentAccessTokenLifeTime!: number;
+
   /**
    * The current user.
    *
@@ -53,6 +56,8 @@ export class UserService {
    */
   set accessToken(token: string) {
     localStorage.setItem('accessToken', token);
+    this.currentAccessTokenLifeTime =
+      Date.now() + environment.accessTokenLifetime;
   }
 
   /**
@@ -118,6 +123,24 @@ export class UserService {
       }),
       catchError(() => of(false))
     );
+  }
+
+  /**
+   * Check if the access token is expired.
+   *
+   * @returns If the token is expired.
+   */
+  isAccessTokenExpired(): boolean {
+    return Date.now() >= this.currentAccessTokenLifeTime;
+  }
+
+  /**
+   * Check if the session is active.
+   *
+   * @returns Whether the session is active or not.
+   */
+  isSessionActive(): boolean {
+    return !!this.accessToken && !this.isAccessTokenExpired();
   }
 
   /**

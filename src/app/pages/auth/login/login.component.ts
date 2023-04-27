@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -34,7 +34,7 @@ import { errorTailorImports } from '@ngneat/error-tailor';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   /** User service. */
   private _userService = inject(UserService);
 
@@ -51,6 +51,15 @@ export class LoginComponent {
   });
 
   constructor(private fb: FormBuilder) {}
+
+  /**
+   * Initial life cycle method.
+   */
+  ngOnInit(): void {
+    if (this._userService.isSessionActive()) {
+      this._router.navigateByUrl('/home');
+    }
+  }
 
   loginUser(): void {
     this._userService.loginUser(this.loginForm.value).subscribe({
