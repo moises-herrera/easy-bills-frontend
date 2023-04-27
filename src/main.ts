@@ -4,9 +4,10 @@ import { provideRouter } from '@angular/router';
 import { appRoutes } from './app/app.routes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { provideErrorTailorConfig } from '@ngneat/error-tailor';
+import { AuthInterceptor } from './app/core/auth.interceptor';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -17,12 +18,18 @@ bootstrapApplication(AppComponent, {
       errors: {
         useValue: {
           required: 'Este campo es requerido',
-          minlength: ({ requiredLength }) => `El campo debe tener mínimo ${requiredLength} carácteres`,
+          minlength: ({ requiredLength }) =>
+            `El campo debe tener mínimo ${requiredLength} carácteres`,
           pattern: 'El valor ingresado es inválido',
-          passwordsMatch: 'Las contraseñas no coinciden'
+          passwordsMatch: 'Las contraseñas no coinciden',
         },
       },
     }),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
     MessageService,
   ],
 }).catch((err) => console.error(err));

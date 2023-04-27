@@ -9,6 +9,7 @@ import {
   SendEmail,
   User,
 } from 'src/models';
+import { Router } from '@angular/router';
 
 const baseUrl = environment.baseUrl;
 
@@ -21,6 +22,9 @@ const baseUrl = environment.baseUrl;
 export class UserService {
   /** Http client. */
   private _http = inject(HttpClient);
+
+  /** Router. */
+  private _router = inject(Router);
 
   /** Current access token life time. */
   currentAccessTokenLifeTime!: number;
@@ -109,12 +113,8 @@ export class UserService {
    */
   validateToken(): Observable<boolean> {
     const url = `${baseUrl}/users/renew-token`;
-    const headers = new HttpHeaders().set(
-      'Authorization',
-      `Bearer ${this.accessToken}`
-    );
 
-    return this._http.get<LoginUserResponse>(url, { headers }).pipe(
+    return this._http.get<LoginUserResponse>(url).pipe(
       map(({ user, accessToken }) => {
         this.user = user;
         this.accessToken = accessToken;
@@ -147,6 +147,7 @@ export class UserService {
    * Log the user out.
    */
   logout(): void {
-    localStorage.removeItem('accessToken');
+    localStorage.clear();
+    this._router.navigateByUrl('/auth/login');
   }
 }
