@@ -6,3 +6,4 @@ export * from './enums/role';
 export * from './login-user-response';
 export * from './send-email';
 export * from './menu-item';
+export * from './account';

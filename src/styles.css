@@ -5,6 +5,7 @@
 
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
 
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
 
@@ -45,4 +46,8 @@ html, body {
   margin-top: 0.25rem;
   font-size: 14px;
   color: #dc3545;
+}
+
+.section-content {
+  @apply bg-white p-4 m-2 rounded-md border border-gray-200;
 }
