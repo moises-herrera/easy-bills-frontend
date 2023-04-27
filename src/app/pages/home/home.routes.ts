@@ -5,5 +5,7 @@ export const homeRoutes: Routes = [
   {
     path: '',
     component: HomeComponent,
+    loadChildren: () =>
+      import('./modules.routes').then((routes) => routes.modulesRoutes),
   },
 ];

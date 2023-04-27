@@ -1,0 +1,11 @@
+.sidebar {
+  @apply max-w-[200px] h-full;
+}
+
+.sidebar-item {
+  @apply p-4;
+}
+
+.sidebar-active {
+  @apply text-blue-600;
+}
