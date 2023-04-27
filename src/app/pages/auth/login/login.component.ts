@@ -11,7 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { UserService } from 'src/app/services/user.service';
 import { AlertService } from 'src/app/services/alert.service';
 import { MessagesModule } from 'primeng/messages';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormValidator } from 'src/helpers';
 import { errorTailorImports } from '@ngneat/error-tailor';
@@ -41,6 +41,9 @@ export class LoginComponent {
   /** Alert service. */
   private _alertService = inject(AlertService);
 
+  /** Router. */
+  private _router = inject(Router);
+
   /** Login form. */
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.pattern(FormValidator.emailPattern)]],
@@ -56,6 +59,7 @@ export class LoginComponent {
           severity: 'success',
           summary: 'Sesión iniciada exitosamente',
         });
+        this._router.navigateByUrl('/home');
       },
       error: (err: unknown) => {
         this._alertService.displayMessage({

@@ -1,12 +1,13 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, shareReplay, tap } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, catchError, map, of, shareReplay, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
   LoginUser,
   RegisterUser,
   LoginUserResponse,
   SendEmail,
+  User,
 } from 'src/models';
 
 const baseUrl = environment.baseUrl;
@@ -21,8 +22,38 @@ export class UserService {
   /** Http client. */
   private _http = inject(HttpClient);
 
-  /** The access token for API authentication. */
-  accessToken!: string;
+  /**
+   * The current user.
+   *
+   * @returns The user data.
+   */
+  get user(): User {
+    const userData = localStorage.getItem('user');
+    return userData ? JSON.parse(userData) : null;
+  }
+
+  /**
+   * Set the current user.
+   */
+  set user(userData: User) {
+    localStorage.setItem('user', JSON.stringify(userData));
+  }
+
+  /**
+   * The access token for API authentication.
+   *
+   * @returns The access token.
+   */
+  get accessToken(): string {
+    return localStorage.getItem('accessToken') || '';
+  }
+
+  /**
+   * The access token for API authentication.
+   */
+  set accessToken(token: string) {
+    localStorage.setItem('accessToken', token);
+  }
 
   /**
    * Register a user.
@@ -47,8 +78,8 @@ export class UserService {
       .post<LoginUserResponse>(`${baseUrl}/users/login`, user)
       .pipe(
         tap(({ user, accessToken }) => {
+          this.user = user;
           this.accessToken = accessToken;
-          localStorage.setItem('user', JSON.stringify(user));
         }),
         shareReplay({ bufferSize: 1, refCount: true })
       );
@@ -64,5 +95,35 @@ export class UserService {
     return this._http.post<void>(`${baseUrl}/email/confirm-email`, <SendEmail>{
       recipient: userEmail,
     });
+  }
+
+  /**
+   * Validate access token.
+   *
+   * @returns True if the token is valid, false otherwise.
+   */
+  validateToken(): Observable<boolean> {
+    const url = `${baseUrl}/users/renew-token`;
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      `Bearer ${this.accessToken}`
+    );
+
+    return this._http.get<LoginUserResponse>(url, { headers }).pipe(
+      map(({ user, accessToken }) => {
+        this.user = user;
+        this.accessToken = accessToken;
+
+        return true;
+      }),
+      catchError(() => of(false))
+    );
+  }
+
+  /**
+   * Log the user out.
+   */
+  logout(): void {
+    localStorage.removeItem('accessToken');
   }
 }
