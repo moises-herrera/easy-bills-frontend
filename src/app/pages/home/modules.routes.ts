@@ -21,4 +21,8 @@ export const modulesRoutes: Routes = [
     path: 'transactions',
     component: TransactionsComponent,
   },
+  {
+    path: '**',
+    redirectTo: 'dashboard'
+  }
 ];

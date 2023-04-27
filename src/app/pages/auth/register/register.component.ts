@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   AbstractControl,
@@ -132,9 +132,7 @@ export class RegisterComponent {
    */
   get isPasswordInvalid(): boolean {
     return (
-      this.password !== null &&
-      this.password.touched &&
-      this.password.invalid
+      this.password !== null && this.password.touched && this.password.invalid
     );
   }
 

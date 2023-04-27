@@ -34,7 +34,7 @@ import { errorTailorImports } from '@ngneat/error-tailor';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   /** User service. */
   private _userService = inject(UserService);
 
@@ -51,15 +51,6 @@ export class LoginComponent implements OnInit {
   });
 
   constructor(private fb: FormBuilder) {}
-
-  /**
-   * Initial life cycle method.
-   */
-  ngOnInit(): void {
-    if (this._userService.isSessionActive()) {
-      this._router.navigateByUrl('/home');
-    }
-  }
 
   loginUser(): void {
     this._userService.loginUser(this.loginForm.value).subscribe({
