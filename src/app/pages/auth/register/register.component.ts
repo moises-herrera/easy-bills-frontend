@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  AbstractControl,
   AbstractControlOptions,
   FormBuilder,
   FormGroup,
@@ -18,6 +19,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormValidator } from 'src/helpers';
 import { Router, RouterModule } from '@angular/router';
 import { switchMap } from 'rxjs';
+import { errorTailorImports } from '@ngneat/error-tailor';
 
 /**
  * Sign up form.
@@ -34,6 +36,7 @@ import { switchMap } from 'rxjs';
     MessagesModule,
     PasswordModule,
     TooltipModule,
+    errorTailorImports,
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
@@ -61,13 +64,15 @@ export class RegisterComponent {
         '',
         [
           Validators.required,
+          Validators.minLength(6),
           Validators.pattern(FormValidator.passwordPattern),
         ],
       ],
-      confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
     },
     {
-      validators: FormValidator.validateEqualFields(
+      updateOn: 'blur',
+      validators: FormValidator.validatePasswordsMatch(
         'password',
         'confirmPassword'
       ),
@@ -111,5 +116,40 @@ export class RegisterComponent {
           });
         },
       });
+  }
+
+  /**
+   * Get password form field.
+   */
+  get password(): AbstractControl | null {
+    return this.registerForm.get('password');
+  }
+
+  /**
+   * Check if the password field is invalid.
+   *
+   * @returns True if invalid, false otherwise.
+   */
+  get isPasswordInvalid(): boolean {
+    return (
+      this.password !== null &&
+      this.password.touched &&
+      this.password.invalid
+    );
+  }
+
+  /**
+   * Get the password error message.
+   *
+   * @returns An error message to display when the password has errors.
+   */
+  get passwordErrorMessage(): string {
+    return this.password?.hasError('required')
+      ? 'El campo es requerido'
+      : this.password?.hasError('minlength')
+      ? 'El campo debe tener mínimo 6 carácteres'
+      : this.password?.hasError('pattern')
+      ? 'La contraseña debe contener al menos letras mayúsculas, minúsculas y números'
+      : '';
   }
 }

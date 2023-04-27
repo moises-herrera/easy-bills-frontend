@@ -41,6 +41,9 @@
           </ul>
         </ng-template>
       </p-password>
+      <span *ngIf="isPasswordInvalid" class="control-error">{{
+        passwordErrorMessage
+      }}</span>
     </div>
 
     <div class="form-control">

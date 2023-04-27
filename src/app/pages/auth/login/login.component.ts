@@ -14,6 +14,7 @@ import { MessagesModule } from 'primeng/messages';
 import { RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormValidator } from 'src/helpers';
+import { errorTailorImports } from '@ngneat/error-tailor';
 
 /**
  * Login form page.
@@ -28,6 +29,7 @@ import { FormValidator } from 'src/helpers';
     InputTextModule,
     ButtonModule,
     MessagesModule,
+    errorTailorImports
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
@@ -42,7 +44,7 @@ export class LoginComponent {
   /** Login form. */
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.pattern(FormValidator.emailPattern)]],
-    password: ['', [Validators.required, Validators.minLength(8)]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   constructor(private fb: FormBuilder) {}
