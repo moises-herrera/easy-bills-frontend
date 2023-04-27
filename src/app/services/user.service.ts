@@ -2,7 +2,12 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, shareReplay, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { LoginUser, RegisterUser, LoginUserResponse } from 'src/models';
+import {
+  LoginUser,
+  RegisterUser,
+  LoginUserResponse,
+  SendEmail,
+} from 'src/models';
 
 const baseUrl = environment.baseUrl;
 
@@ -56,6 +61,8 @@ export class UserService {
    * @returns An empty observable.
    */
   sendEmailConfirmation(userEmail: string): Observable<void> {
-    return this._http.post<void>(`${baseUrl}/email/confirm-email`, { userEmail });
+    return this._http.post<void>(`${baseUrl}/email/confirm-email`, <SendEmail>{
+      recipient: userEmail,
+    });
   }
 }

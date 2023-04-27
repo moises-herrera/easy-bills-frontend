@@ -4,3 +4,4 @@ export * from './login-user';
 export * from './user';
 export * from './enums/role';
 export * from './login-user-response';
+export * from './send-email';
