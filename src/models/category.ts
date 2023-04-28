@@ -8,6 +8,12 @@ export interface Category {
   /** Name of the category. */
   name: string;
 
+  /** Category icon. */
+  icon: string;
+
+  /** Color. */
+  color: string;
+
   /** Description. */
   description?: string;
 

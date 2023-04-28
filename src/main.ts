@@ -5,7 +5,7 @@ import { appRoutes } from './app/app.routes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { importProvidersFrom } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { provideErrorTailorConfig } from '@ngneat/error-tailor';
 import { AuthInterceptor } from './app/core/auth.interceptor';
 
@@ -32,5 +32,6 @@ bootstrapApplication(AppComponent, {
       multi: true,
     },
     MessageService,
+    ConfirmationService
   ],
 }).catch((err) => console.error(err));

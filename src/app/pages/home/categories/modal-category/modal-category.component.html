@@ -1,0 +1,54 @@
+<p-dialog
+  [header]="(!categoryId ? 'Agregar' : 'Editar') + ' categoría'"
+  [(visible)]="isVisible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [styleClass]="'w-[500px] min-h-[522px]'"
+  (onShow)="getCategoryData()"
+  (onHide)="hideModal()"
+>
+  <div
+    *ngIf="isLoading; else form"
+    class="flex w-full h-[442px] justify-center items-center"
+  >
+    <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+  </div>
+
+  <ng-template #form>
+    <form
+      [formGroup]="categoryForm"
+      (ngSubmit)="saveCategory()"
+      class="flex flex-col gap-3 p-5"
+    >
+      <div class="form-control">
+        <label>Nombre</label>
+        <input formControlName="name" type="text" pInputText />
+      </div>
+
+      <div class="form-control">
+        <label>Color</label>
+        <p-colorPicker formControlName="color"></p-colorPicker>
+      </div>
+
+      <div class="form-control">
+        <label>Descripción</label>
+        <textarea
+          formControlName="description"
+          rows="3"
+          cols="30"
+          pInputTextarea
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        pButton
+        label="Guardar"
+        class="form-button p-button-rounded p-button-info"
+        [loading]="isSaving"
+        [disabled]="categoryForm.invalid || isSaving"
+      ></button>
+    </form>
+  </ng-template>
+</p-dialog>

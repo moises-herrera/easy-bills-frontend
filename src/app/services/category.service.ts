@@ -10,7 +10,7 @@ const baseUrl = `${environment.baseUrl}/categories`;
  * Category service.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CategoryService {
   /** Http client. */
@@ -24,6 +24,18 @@ export class CategoryService {
   getCategories(): Observable<Category[]> {
     return this._http
       .get<Category[]>(baseUrl)
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
+  }
+
+  /**
+   * Get a category by id.
+   *
+   * @param categoryId The category id.
+   * @returns An empty observable.
+   */
+  getCategoryById(categoryId: string): Observable<Category> {
+    return this._http
+      .get<Category>(`${baseUrl}/${categoryId}`)
       .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 
@@ -42,12 +54,13 @@ export class CategoryService {
   /**
    * Update a category.
    *
+   * @param categoryId The category id.
    * @param category The category data.
    * @returns An empty observable.
    */
-  updateCategory(category: Category): Observable<void> {
+  updateCategory(categoryId: string, category: Partial<Category>): Observable<void> {
     return this._http
-      .put<void>(`${baseUrl}/${category.id}`, category)
+      .put<void>(`${baseUrl}/${categoryId}`, category)
       .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 

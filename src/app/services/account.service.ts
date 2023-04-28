@@ -42,12 +42,13 @@ export class AccountService {
   /**
    * Update an account.
    *
+   * @param accountId The account id.
    * @param account The account data.
    * @returns An empty observable.
    */
-  updateAccount(account: Account): Observable<void> {
+  updateAccount(accountId: string, account: Partial<Account>): Observable<void> {
     return this._http
-      .put<void>(`${baseUrl}/${account.id}`, account)
+      .put<void>(`${baseUrl}/${accountId}`, account)
       .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 

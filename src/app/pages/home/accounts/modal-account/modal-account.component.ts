@@ -67,7 +67,7 @@ export class ModalAccountComponent {
   isSaving = false;
 
   /** Account form. */
-  accountForm = this._fb.group({
+  accountForm = this._fb.nonNullable.group({
     name: ['', Validators.required],
     typeAccount: [0, Validators.required],
     balance: [0, [Validators.required, Validators.min(0)]],
@@ -92,7 +92,7 @@ export class ModalAccountComponent {
   saveAccount(): void {
     this.isSaving = true;
     this._accountService
-      .createAccount(this.accountForm.value as Account)
+      .createAccount(this.accountForm.value)
       .subscribe({
         next: () => {
           this.isSaving = false;
