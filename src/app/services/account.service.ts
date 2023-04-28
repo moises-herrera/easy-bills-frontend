@@ -38,4 +38,28 @@ export class AccountService {
       .post<void>(baseUrl, account)
       .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
+
+  /**
+   * Update an account.
+   *
+   * @param account The account data.
+   * @returns An empty observable.
+   */
+  updateAccount(account: Account): Observable<void> {
+    return this._http
+      .put<void>(`${baseUrl}/${account.id}`, account)
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
+  }
+
+  /**
+   * Delete an account.
+   *
+   * @param accountId The account id.
+   * @returns An empty observable.
+   */
+  deleteAccount(accountId: string): Observable<void> {
+    return this._http
+      .delete<void>(`${baseUrl}/${accountId}`)
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
+  }
 }
