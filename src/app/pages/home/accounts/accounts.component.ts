@@ -4,7 +4,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
-import { Account } from 'src/models';
+import { Account, FinanceAccountType } from 'src/models';
 import { AccountService } from 'src/app/services/account.service';
 import { TypeAccountPipe } from 'src/app/core/type-account.pipe';
 import { ModalAccountComponent } from './modal-account/modal-account.component';
@@ -144,5 +144,15 @@ export class AccountsComponent implements OnInit {
         },
       });
     });
+  }
+
+  /**
+   * Check if the type of an account is bank.
+   *
+   * @param typeAccount The type of the account.
+   * @returns True if is a bank account, false otherwise.
+   */
+  isBankAccount(typeAccount: FinanceAccountType): boolean {
+    return FinanceAccountType.Bank === typeAccount;
   }
 }

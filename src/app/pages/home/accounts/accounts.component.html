@@ -28,7 +28,21 @@
 
 <article *ngFor="let account of accounts$ | async" class="section-content">
   <div class="grid grid-cols-4 items-center">
-    <div>
+    <div class="flex items-center space-x-4">
+      <div
+        class="w-[40px] h-[40px] flex justify-center items-center rounded-full text-white"
+        [ngClass]="
+          isBankAccount(account.typeAccount) ? 'bg-gray-400' : 'bg-green-600'
+        "
+      >
+        <i
+          [ngClass]="
+            isBankAccount(account.typeAccount)
+              ? 'fa-solid fa-building-columns'
+              : 'fa-solid fa-wallet'
+          "
+        ></i>
+      </div>
       <span class="font-semibold truncate">{{ account.name }}</span>
     </div>
     <div class="text-gray-400 truncate">
