@@ -26,4 +26,16 @@ export class AccountService {
       .get<Account[]>(baseUrl)
       .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
+
+  /**
+   * Create a new account.
+   *
+   * @param account The account data.
+   * @returns An empty observable.
+   */
+  createAccount(account: Partial<Account>): Observable<void> {
+    return this._http
+      .post<void>(baseUrl, account)
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
+  }
 }

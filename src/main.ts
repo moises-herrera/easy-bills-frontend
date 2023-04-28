@@ -20,6 +20,7 @@ bootstrapApplication(AppComponent, {
           required: 'Este campo es requerido',
           minlength: ({ requiredLength }) =>
             `El campo debe tener mínimo ${requiredLength} carácteres`,
+          min: ({ min }) => `El valor debe ser mayor a ${min}`,
           pattern: 'El valor ingresado es inválido',
           passwordsMatch: 'Las contraseñas no coinciden',
         },

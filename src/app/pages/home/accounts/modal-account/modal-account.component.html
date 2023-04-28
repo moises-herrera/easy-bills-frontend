@@ -1,0 +1,51 @@
+<p-dialog
+  header="Agregar cuenta"
+  [(visible)]="isVisible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [styleClass]="'w-[500px]'"
+  (onHide)="isVisible = false"
+>
+  <form
+    [formGroup]="accountForm"
+    (ngSubmit)="saveAccount()"
+    class="flex flex-col gap-3 p-5"
+  >
+    <div class="form-control">
+      <label>Nombre</label>
+      <input formControlName="name" type="text" pInputText />
+    </div>
+
+    <div class="form-control">
+      <label>Tipo de cuenta</label>
+      <p-dropdown
+        formControlName="typeAccount"
+        [options]="accountTypes"
+        optionLabel="label"
+        optionValue="value"
+        [styleClass]="'w-full'"
+      ></p-dropdown>
+    </div>
+
+    <div class="form-control">
+      <label>Saldo inicial</label>
+      <input
+        formControlName="balance"
+        type="text"
+        pInputText
+        type="number"
+        min="0"
+      />
+    </div>
+
+    <button
+      type="submit"
+      pButton
+      label="Guardar"
+      class="form-button p-button-rounded p-button-info"
+      [loading]="isSaving"
+      [disabled]="accountForm.invalid || isSaving"
+    ></button>
+  </form>
+</p-dialog>

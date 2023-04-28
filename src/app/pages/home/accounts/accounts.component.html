@@ -12,10 +12,15 @@
     label="Agregar"
     icon="pi pi-plus"
     class="p-button-rounded ml-3"
+    (click)="showAccountModal()"
   ></button>
 </div>
 
-<article *ngFor="let account of accounts" class="section-content">
+<div *ngIf="isLoading" class="w-full h-[80%] flex justify-center items-center">
+  <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+</div>
+
+<article *ngFor="let account of accounts$ | async" class="section-content">
   <div class="flex justify-between">
     <div>
       <span class="font-semibold">{{ account.name }}</span>
@@ -26,3 +31,5 @@
     </div>
   </div>
 </article>
+
+<app-modal-account [(isVisible)]="isModalVisible"></app-modal-account>

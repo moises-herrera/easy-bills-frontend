@@ -7,6 +7,9 @@ import { DividerModule } from 'primeng/divider';
 import { Account } from 'src/models';
 import { AccountService } from 'src/app/services/account.service';
 import { TypeAccountPipe } from 'src/app/core/type-account.pipe';
+import { ModalAccountComponent } from './modal-account/modal-account.component';
+import { Observable, tap } from 'rxjs';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-accounts',
@@ -17,7 +20,9 @@ import { TypeAccountPipe } from 'src/app/core/type-account.pipe';
     InputTextModule,
     ButtonModule,
     DividerModule,
-    TypeAccountPipe
+    ProgressSpinnerModule,
+    TypeAccountPipe,
+    ModalAccountComponent,
   ],
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.css'],
@@ -30,16 +35,28 @@ export class AccountsComponent implements OnInit {
   search = '';
 
   /** List of accounts. */
-  accounts: Account[] = [];
+  accounts$!: Observable<Account[]>;
+
+  /** If the account modal is visible. */
+  isModalVisible = false;
+
+  /** If the data is loading. */
+  isLoading = false;
 
   /**
    * Initial life cycle method.
    */
   ngOnInit(): void {
-    this._accountService.getAccounts().subscribe({
-      next: (accounts) => {
-        this.accounts = accounts;
-      },
-    });
+    this.isLoading = true;
+    this.accounts$ = this._accountService
+      .getAccounts()
+      .pipe(tap(() => (this.isLoading = false)));
+  }
+
+  /**
+   * Show the account modal.
+   */
+  showAccountModal(): void {
+    this.isModalVisible = true;
   }
 }

@@ -34,7 +34,7 @@ html, body {
 }
 
 .alert-message {
-  @apply absolute w-[380px] right-4 bottom-0;
+  @apply absolute w-[380px] right-4 bottom-0 z-[2000];
 }
 
 .p-password, .p-password input {
@@ -50,4 +50,8 @@ html, body {
 
 .section-content {
   @apply bg-white p-4 m-2 rounded-md border border-gray-200;
+}
+
+.p-progress-spinner-circle {
+  stroke: #3B82F6 !important;
 }

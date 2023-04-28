@@ -17,7 +17,7 @@ export interface Account {
   balance: number;
 
   /** User id. */
-  userId: number;
+  userId: string;
 
   /** Transactions. */
   transactions: any;
