@@ -1,7 +1,7 @@
 import { FinanceAccountType } from '.';
 
 /**
- * Account model.
+ * Represents all the information about a finance account.
  */
 export interface Account {
   /** Account id. */
