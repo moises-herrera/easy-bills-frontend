@@ -22,7 +22,7 @@
   ></button>
 </div>
 
-<div *ngIf="isLoading" class="w-full h-[80%] flex justify-center items-center">
+<div *ngIf="isLoading" class="loading-indicator h-[80%]">
   <p-progressSpinner strokeWidth="4"></p-progressSpinner>
 </div>
 
@@ -35,7 +35,7 @@
       >
         <i [ngClass]="category.icon" class="text-white"></i>
       </div>
-      <div class="font-semibold">{{ category.name }}</div>
+      <div class="font-semibold truncate">{{ category.name }}</div>
     </div>
     <div>
       <span class="text-gray-400 truncate">{{ category.description }}</span>
@@ -66,7 +66,7 @@
 ></app-modal-category>
 
 <p-confirmDialog
-  [style]="{ width: '50vw' }"
+  [styleClass]="'confirm-dialog'"
   acceptLabel="Si"
   rejectLabel="No"
   acceptButtonStyleClass="p-button-info"

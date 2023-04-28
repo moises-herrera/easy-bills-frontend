@@ -28,6 +28,18 @@ export class AccountService {
   }
 
   /**
+   * Get an account by id.
+   *
+   * @param accountId The account id.
+   * @returns The account.
+   */
+  getAccountById(accountId: string): Observable<Account> {
+    return this._http
+      .get<Account>(`${baseUrl}/${accountId}`)
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
+  }
+
+  /**
    * Create a new account.
    *
    * @param account The account data.
@@ -46,7 +58,10 @@ export class AccountService {
    * @param account The account data.
    * @returns An empty observable.
    */
-  updateAccount(accountId: string, account: Partial<Account>): Observable<void> {
+  updateAccount(
+    accountId: string,
+    account: Partial<Account>
+  ): Observable<void> {
     return this._http
       .put<void>(`${baseUrl}/${accountId}`, account)
       .pipe(shareReplay({ bufferSize: 1, refCount: true }));

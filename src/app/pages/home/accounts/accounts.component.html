@@ -22,20 +22,50 @@
   ></button>
 </div>
 
-<div *ngIf="isLoading" class="w-full h-[80%] flex justify-center items-center">
+<div *ngIf="isLoading" class="loading-indicator">
   <p-progressSpinner strokeWidth="4"></p-progressSpinner>
 </div>
 
 <article *ngFor="let account of accounts$ | async" class="section-content">
-  <div class="flex justify-between">
+  <div class="grid grid-cols-4 items-center">
     <div>
-      <span class="font-semibold">{{ account.name }}</span>
+      <span class="font-semibold truncate">{{ account.name }}</span>
     </div>
-    <div class="text-gray-400">{{ account.typeAccount | typeAccount }}</div>
+    <div class="text-gray-400 truncate">
+      {{ account.typeAccount | typeAccount }}
+    </div>
     <div>
-      <span class="font-semibold">{{ account.balance | number }} COP</span>
+      <span class="font-semibold truncate"
+        >{{ account.balance | number }} COP</span
+      >
+    </div>
+    <div class="text-right">
+      <button
+        type="button"
+        pButton
+        icon="pi pi-ellipsis-v"
+        class="p-button-secondary p-button-text p-button-sm"
+        (click)="menu.toggle($event)"
+      ></button>
+      <p-menu
+        #menu
+        [model]="options"
+        [popup]="true"
+        (click)="onClickAccount(account.id)"
+      ></p-menu>
     </div>
   </div>
 </article>
 
-<app-modal-account [(isVisible)]="isModalVisible"></app-modal-account>
+<app-modal-account
+  [(isVisible)]="isModalVisible"
+  [(accountId)]="accountId"
+></app-modal-account>
+
+<p-confirmDialog
+  [styleClass]="'confirm-dialog'"
+  acceptLabel="Si"
+  rejectLabel="No"
+  acceptButtonStyleClass="p-button-info"
+  rejectButtonStyleClass="p-button-danger"
+></p-confirmDialog>

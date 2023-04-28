@@ -4,7 +4,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Account, FinanceAccountType } from 'src/models';
+import { FinanceAccountType } from 'src/models';
 import { ButtonModule } from 'primeng/button';
 import { errorTailorImports } from '@ngneat/error-tailor';
 import { AccountService } from 'src/app/services/account.service';
@@ -12,6 +12,8 @@ import { UserService } from 'src/app/services/user.service';
 import { AlertService } from 'src/app/services/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DividerModule } from 'primeng/divider';
+import { tap } from 'rxjs';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-modal-account',
@@ -25,6 +27,7 @@ import { DividerModule } from 'primeng/divider';
     ButtonModule,
     errorTailorImports,
     DividerModule,
+    ProgressSpinnerModule,
   ],
   templateUrl: './modal-account.component.html',
   styleUrls: ['./modal-account.component.css'],
@@ -38,6 +41,15 @@ export class ModalAccountComponent {
 
   /** Emit visibility value. */
   @Output() isVisibleChange = new EventEmitter<boolean>();
+
+  /** Account id. */
+  @Input() accountId?: string = '';
+
+  /** Emit account id. */
+  @Output() accountIdChange = new EventEmitter<string>();
+
+  /** Emit event when it is necessary to reload the data. */
+  @Output() reloadData = new EventEmitter<void>();
 
   /** Form builder. */
   private _fb = inject(FormBuilder);
@@ -63,6 +75,18 @@ export class ModalAccountComponent {
     return this._isVisible;
   }
 
+  /**
+   * Get the label of the header.
+   *
+   * @returns The label.
+   */
+  get headerLabel(): string {
+    return `${!this.accountId ? 'Agregar' : 'Editar'} cuenta`;
+  }
+
+  /** If the information is loading. */
+  isLoading = false;
+
   /** If the information is being saved. */
   isSaving = false;
 
@@ -87,29 +111,59 @@ export class ModalAccountComponent {
   ];
 
   /**
+   * Get account data.
+   */
+  getAccountData(): void {
+    if (this.accountId) {
+      this.isLoading = true;
+      this._accountService
+        .getAccountById(this.accountId)
+        .pipe(tap(() => (this.isLoading = false)))
+        .subscribe({
+          next: (account) => {
+            this.accountForm.patchValue(account);
+          },
+        });
+    }
+  }
+
+  /**
    * Save the account info.
    */
   saveAccount(): void {
     this.isSaving = true;
-    this._accountService
-      .createAccount(this.accountForm.value)
-      .subscribe({
-        next: () => {
-          this.isSaving = false;
-          this._alertService.displayMessage({
-            severity: 'success',
-            summary: 'Cuenta guardada exitosamente',
-          });
-        },
-        error: (err: unknown) => {
-          this.isSaving = false;
-          this._alertService.displayMessage({
-            severity: 'error',
-            summary:
-              (err as HttpErrorResponse)?.error?.error ||
-              'Ha ocurrido un error',
-          });
-        },
-      });
+    const accountRequest$ = !this.accountId
+      ? this._accountService.createAccount(this.accountForm.value)
+      : this._accountService.updateAccount(
+          this.accountId,
+          this.accountForm.value
+        );
+
+    accountRequest$.pipe(tap(() => this.reloadData.emit())).subscribe({
+      next: () => {
+        this.isSaving = false;
+        this._alertService.displayMessage({
+          severity: 'success',
+          summary: 'Cuenta guardada exitosamente',
+        });
+      },
+      error: (err: unknown) => {
+        this.isSaving = false;
+        this._alertService.displayMessage({
+          severity: 'error',
+          summary:
+            (err as HttpErrorResponse)?.error?.error || 'Ha ocurrido un error',
+        });
+      },
+    });
+  }
+
+  /**
+   * Handle event when the modal is closed.
+   */
+  hideModal(): void {
+    this.isVisible = false;
+    this.accountIdChange.emit('');
+    this.accountForm.reset();
   }
 }

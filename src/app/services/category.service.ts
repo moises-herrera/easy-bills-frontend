@@ -31,7 +31,7 @@ export class CategoryService {
    * Get a category by id.
    *
    * @param categoryId The category id.
-   * @returns An empty observable.
+   * @returns The category.
    */
   getCategoryById(categoryId: string): Observable<Category> {
     return this._http

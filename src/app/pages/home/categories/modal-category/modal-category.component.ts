@@ -1,12 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  inject,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -82,6 +74,15 @@ export class ModalCategoryComponent {
    */
   get isVisible(): boolean {
     return this._isVisible;
+  }
+
+  /**
+   * Get the label of the header.
+   *
+   * @returns The label.
+   */
+  get headerLabel(): string {
+    return `${!this.categoryId ? 'Agregar' : 'Editar'} categoría`;
   }
 
   /** If the information is loading. */

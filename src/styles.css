@@ -55,3 +55,15 @@ html, body {
 .p-progress-spinner-circle {
   stroke: #3B82F6 !important;
 }
+
+.loading-indicator {
+  @apply w-full h-full min-h-[700px] flex justify-center items-center;
+}
+
+.modal {
+  @apply w-[500px] h-1/2 min-h-[530px];
+}
+
+.confirm-dialog {
+  @apply w-1/4 min-w-[380px];
+}

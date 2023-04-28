@@ -1,16 +1,16 @@
 <p-dialog
-  [header]="(!categoryId ? 'Agregar' : 'Editar') + ' categoría'"
+  [header]="headerLabel"
   [(visible)]="isVisible"
   [modal]="true"
   [draggable]="false"
   [resizable]="false"
-  [styleClass]="'w-[500px] min-h-[522px]'"
+  [styleClass]="'modal'"
   (onShow)="getCategoryData()"
   (onHide)="hideModal()"
 >
   <div
     *ngIf="isLoading; else form"
-    class="flex w-full h-[442px] justify-center items-center"
+    class="loading-indicator"
   >
     <p-progressSpinner strokeWidth="4"></p-progressSpinner>
   </div>
