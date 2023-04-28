@@ -52,6 +52,10 @@ html, body {
   @apply bg-white p-4 m-2 rounded-md border border-gray-200;
 }
 
+.section-title {
+  @apply text-2xl font-bold;
+}
+
 .p-progress-spinner-circle {
   stroke: #3B82F6 !important;
 }
