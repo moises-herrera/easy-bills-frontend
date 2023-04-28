@@ -1,1 +1,35 @@
-<p>categories works!</p>
+<div class="section-content">
+  <h4 class="text-2xl font-bold">Categorías</h4>
+  <p-divider></p-divider>
+
+  <span class="p-input-icon-left">
+    <i class="pi pi-search"></i>
+    <input
+      type="text"
+      pInputText
+      [(ngModel)]="search"
+      (ngModelChange)="searchCategories()"
+      placeholder="Buscar"
+    />
+  </span>
+
+  <button
+    pButton
+    label="Agregar"
+    icon="pi pi-plus"
+    class="p-button-rounded ml-3"
+  ></button>
+</div>
+
+<div *ngIf="isLoading" class="w-full h-[80%] flex justify-center items-center">
+  <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+</div>
+
+<article *ngFor="let category of categories$ | async" class="section-content">
+  <div class="flex justify-between">
+
+    <div>
+      <span class="font-semibold">{{ category.name }}</span>
+    </div>
+  </div>
+</article>
