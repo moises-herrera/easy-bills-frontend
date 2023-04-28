@@ -4,7 +4,13 @@
 
   <span class="p-input-icon-left">
     <i class="pi pi-search"></i>
-    <input type="text" pInputText [(ngModel)]="search" placeholder="Buscar" />
+    <input
+      type="text"
+      pInputText
+      [(ngModel)]="search"
+      (ngModelChange)="searchAccounts()"
+      placeholder="Buscar"
+    />
   </span>
 
   <button

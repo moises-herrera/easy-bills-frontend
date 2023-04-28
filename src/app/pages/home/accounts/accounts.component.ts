@@ -8,7 +8,7 @@ import { Account } from 'src/models';
 import { AccountService } from 'src/app/services/account.service';
 import { TypeAccountPipe } from 'src/app/core/type-account.pipe';
 import { ModalAccountComponent } from './modal-account/modal-account.component';
-import { Observable, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
@@ -51,6 +51,19 @@ export class AccountsComponent implements OnInit {
     this.accounts$ = this._accountService
       .getAccounts()
       .pipe(tap(() => (this.isLoading = false)));
+  }
+
+  /**
+   * Search accounts.
+   */
+  searchAccounts(): void {
+    this.accounts$ = this.accounts$.pipe(
+      map((accounts) =>
+        accounts.filter(({ name }) =>
+          name.toLowerCase().includes(this.search.toLowerCase())
+        )
+      )
+    );
   }
 
   /**
