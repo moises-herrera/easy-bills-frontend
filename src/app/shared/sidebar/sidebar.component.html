@@ -1,4 +1,8 @@
 <nav class="sidebar">
+  <a class="flex items-center space-x-3 m-2 p-4 border border-gray-200" routerLink="/home">
+    <i class="fa-solid fa-duotone fa-wallet text-5xl text-gray-500 cursor-pointer"></i>
+    <span class="text-xl font-bold">Easy Bills</span>
+  </a>
   <ul>
     <li *ngFor="let item of links" class="sidebar-item">
       <a [routerLink]="item.url" routerLinkActive="sidebar-item-active">
