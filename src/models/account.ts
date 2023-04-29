@@ -1,4 +1,4 @@
-import { FinanceAccountType, Transaction } from '.';
+import { FinanceAccountType } from '.';
 
 /**
  * Represents all the information about a finance account.
@@ -18,7 +18,4 @@ export interface Account {
 
   /** User id. */
   userId: string;
-
-  /** Transactions. */
-  transactions: Transaction[];
 }

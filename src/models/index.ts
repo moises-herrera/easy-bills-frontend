@@ -7,5 +7,6 @@ export * from './login-user-response';
 export * from './send-email';
 export * from './menu-item';
 export * from './transaction';
+export * from './transaction-info';
 export * from './account';
 export * from './category';

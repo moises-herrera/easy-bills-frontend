@@ -1,1 +1,95 @@
-<p>transactions works!</p>
+<div class="section-content">
+  <h4 class="section-title">Transacciones</h4>
+  <p-divider></p-divider>
+
+  <span class="p-input-icon-left">
+    <i class="pi pi-search"></i>
+    <input
+      type="text"
+      pInputText
+      [(ngModel)]="search"
+      (ngModelChange)="searchTransactions()"
+      placeholder="Buscar"
+    />
+  </span>
+
+  <button
+    pButton
+    label="Agregar"
+    icon="pi pi-plus"
+    class="p-button-rounded ml-3"
+    (click)="showTransactionModal()"
+  ></button>
+</div>
+
+<div *ngIf="isLoading" class="loading-indicator h-[80%]">
+  <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+</div>
+
+<article
+  *ngFor="let transaction of transactions$ | async"
+  class="section-content"
+>
+  <div class="grid grid-cols-5 items-center">
+    <!-- Category -->
+    <div class="flex items-center space-x-4">
+      <div
+        class="flex w-[40px] h-[40px] rounded-full justify-center items-center"
+        [style.background-color]="transaction.category.color || '#000'"
+      >
+        <i [ngClass]="transaction.category.icon" class="text-white"></i>
+      </div>
+      <div class="font-semibold truncate">{{ transaction.category.name }}</div>
+    </div>
+
+    <!-- Account -->
+    <div>
+      <span class="font-semibold truncate">{{ transaction.account.name }}</span>
+    </div>
+
+    <!-- Transaction info -->
+    <div>
+      <span class="text-gray-400 truncate">{{ transaction.description }}</span>
+    </div>
+    <div>
+      <span
+        class="font-semibold truncate"
+        [ngClass]="
+          !isIncome(transaction.transactionType)
+            ? 'text-red-500'
+            : 'text-green-500'
+        "
+        >{{ !isIncome(transaction.transactionType) ? "-" : ""
+        }}{{ transaction.amount | number }} COP</span
+      >
+    </div>
+    <div class="text-right">
+      <button
+        type="button"
+        pButton
+        icon="pi pi-ellipsis-v"
+        class="p-button-secondary p-button-text p-button-sm"
+        (click)="menu.toggle($event)"
+      ></button>
+      <p-menu
+        #menu
+        [model]="options"
+        [popup]="true"
+        (click)="onClickTransaction(transaction.id)"
+      ></p-menu>
+    </div>
+  </div>
+</article>
+
+<app-modal-transaction
+  [(isVisible)]="isModalVisible"
+  [(transactionId)]="transactionId"
+></app-modal-transaction>
+
+<p-confirmDialog
+  [styleClass]="'confirm-dialog'"
+  acceptLabel="Si"
+  rejectLabel="No"
+  acceptButtonStyleClass="p-button-info"
+  rejectButtonStyleClass="p-button-danger"
+></p-confirmDialog>

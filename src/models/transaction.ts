@@ -1,3 +1,5 @@
+import { TransactionType } from '.';
+
 /**
  * Represents all the information about a transaction.
  */
@@ -17,6 +19,6 @@ export interface Transaction {
   /** Category id. */
   categoryId: string;
 
-  /** If the transaction is an income. */
-  isIncome: boolean;
+  /** Type of the transaction. */
+  transactionType: TransactionType;
 }

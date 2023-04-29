@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Transaction } from 'src/models';
+import { Transaction, TransactionInfo } from 'src/models';
 
 const baseUrl = `${environment.baseUrl}/transactions`;
 
@@ -21,9 +21,9 @@ export class TransactionService {
    *
    * @returns List of transactions.
    */
-  getTransactions(): Observable<Transaction[]> {
+  getTransactions(): Observable<TransactionInfo[]> {
     return this._http
-      .get<Transaction[]>(baseUrl)
+      .get<TransactionInfo[]>(baseUrl)
       .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 
@@ -33,9 +33,9 @@ export class TransactionService {
    * @param transactionId The transaction id.
    * @returns The transaction.
    */
-  getTransactionById(transactionId: string): Observable<Transaction> {
+  getTransactionById(transactionId: string): Observable<TransactionInfo> {
     return this._http
-      .get<Transaction>(`${baseUrl}/${transactionId}`)
+      .get<TransactionInfo>(`${baseUrl}/${transactionId}`)
       .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 
