@@ -21,4 +21,7 @@ export interface Transaction {
 
   /** Type of the transaction. */
   transactionType: TransactionType;
+
+  /** Created date. */
+  createdDate: Date;
 }
