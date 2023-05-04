@@ -24,6 +24,7 @@
     <div class="form-control">
       <label htmlFor="password">Contraseña</label>
       <p-password
+        #password
         formControlName="password"
         [toggleMask]="true"
         [weakLabel]="'Débil'"
@@ -41,14 +42,18 @@
           </ul>
         </ng-template>
       </p-password>
-      <span *ngIf="isPasswordInvalid" class="control-error">{{
-        passwordErrorMessage
-      }}</span>
+      <span *ngIf="isPasswordInvalid" class="control-error">
+        {{ passwordErrorMessage }}
+      </span>
     </div>
 
     <div class="form-control">
       <label htmlFor="password">Confirmar contraseña</label>
-      <input formControlName="confirmPassword" type="password" pInputText />
+      <input
+        formControlName="confirmPassword"
+        [type]="!password.unmasked ? 'password' : 'text'"
+        pInputText
+      />
     </div>
 
     <button
