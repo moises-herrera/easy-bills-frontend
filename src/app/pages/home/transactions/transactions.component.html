@@ -30,7 +30,7 @@
   *ngFor="let transaction of transactions$ | async"
   class="section-content"
 >
-  <div class="grid grid-cols-5 items-center">
+  <div class="grid grid-cols-6 items-center">
     <!-- Category -->
     <div class="flex items-center space-x-4">
       <div
@@ -43,17 +43,19 @@
     </div>
 
     <!-- Account -->
-    <div>
-      <span class="font-semibold truncate">{{ transaction.account.name }}</span>
+    <div class="font-semibold truncate">
+      <span>{{ transaction.account.name }}</span>
     </div>
 
     <!-- Transaction info -->
-    <div>
-      <span class="text-gray-400 truncate">{{ transaction.description }}</span>
+    <div class="text-gray-400 truncate">
+      <span>{{ transaction.description }}</span>
     </div>
-    <div>
+    <div class="truncate">
+      <span>{{ transaction.createdDate | date }}</span>
+    </div>
+    <div class="font-semibold truncate">
       <span
-        class="font-semibold truncate"
         [ngClass]="
           !isIncome(transaction.transactionType)
             ? 'text-red-500'

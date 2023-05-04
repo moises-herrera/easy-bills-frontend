@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Transaction, TransactionInfo } from 'src/models';
+import { Transaction, TransactionInfo, TransactionType } from 'src/models';
 
 const baseUrl = `${environment.baseUrl}/transactions`;
 
@@ -21,9 +21,14 @@ export class TransactionService {
    *
    * @returns List of transactions.
    */
-  getTransactions(): Observable<TransactionInfo[]> {
+  getTransactions(
+    from: string = '',
+    to: string = ''
+  ): Observable<TransactionInfo[]> {
+    const params = new HttpParams().set('from', from).set('to', to);
+
     return this._http
-      .get<TransactionInfo[]>(baseUrl)
+      .get<TransactionInfo[]>(baseUrl, { params })
       .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 
@@ -76,6 +81,29 @@ export class TransactionService {
   deleteTransaction(transactionId: string): Observable<void> {
     return this._http
       .delete<void>(`${baseUrl}/${transactionId}`)
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
+  }
+
+  /**
+   * Get all the transactions by category.
+   *
+   * @param transactionType The type of the transaction.
+   * @returns The transactions grouped by category.
+   */
+  getTransactionsByCategory(
+    transactionType: TransactionType = TransactionType.Spending,
+    from: string = '',
+    to: string = ''
+  ): Observable<TransactionInfo[][]> {
+    const params = new HttpParams()
+      .set('transactionType', transactionType)
+      .set('from', from)
+      .set('to', to);
+
+    return this._http
+      .get<TransactionInfo[][]>(`${baseUrl}/group/category`, {
+        params,
+      })
       .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 }

@@ -1,0 +1,57 @@
+<p-dialog
+  [header]="'Configuración del gráfico'"
+  [(visible)]="isVisible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [styleClass]="'w-[500px] h-auto h-[300px]'"
+  (onHide)="hideModal()"
+>
+  <form
+    [formGroup]="settingsForm"
+    (ngSubmit)="saveWidgetSettings()"
+    class="flex flex-col gap-3 px-4 py-2"
+  >
+    <div class="form-control">
+      <label>Período</label>
+      <p-dropdown
+        appendTo="body"
+        formControlName="period"
+        [options]="periodOptions"
+        optionLabel="name"
+        optionValue="value"
+        [styleClass]="'w-full'"
+      ></p-dropdown>
+    </div>
+
+    <ng-container *ngIf="period === 'custom'">
+      <div class="form-control">
+        <label>Desde</label>
+        <p-calendar
+          appendTo="body"
+          formControlName="startDate"
+          [minDate]="minDate"
+          [styleClass]="'w-full'"
+        ></p-calendar>
+      </div>
+
+      <div class="form-control">
+        <label>Hasta</label>
+        <p-calendar
+          appendTo="body"
+          formControlName="endDate"
+          [minDate]="minDate"
+          [styleClass]="'w-full'"
+        ></p-calendar>
+      </div>
+    </ng-container>
+
+    <button
+      type="submit"
+      pButton
+      label="Guardar"
+      class="form-button p-button-rounded p-button-secondary p-button-outlined"
+      [disabled]="settingsForm.invalid"
+    ></button>
+  </form>
+</p-dialog>

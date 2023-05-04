@@ -1,1 +1,101 @@
-<p>dashboard works!</p>
+<div class="section-content">
+  <h4 class="section-title">Dashboard</h4>
+</div>
+
+<section class="flex w-full">
+  <div class="section-content w-1/2">
+    <div class="text-right">
+      <button
+        type="button"
+        pButton
+        icon="pi pi-ellipsis-v"
+        class="p-button-secondary p-button-text p-button-sm"
+        (click)="menuSpending.toggle($event)"
+      ></button>
+      <p-menu
+        #menuSpending
+        [model]="options"
+        [popup]="true"
+        (click)="onClickWidgetSettings(widgetType.SpendingByCategory)"
+      ></p-menu>
+    </div>
+
+    <p-chart
+      type="doughnut"
+      [data]="spendingTransactionsData"
+      [options]="spendingOptions"
+      [responsive]="true"
+      [height]="'500px'"
+    ></p-chart>
+  </div>
+
+  <div class="section-content w-1/2">
+    <div class="text-right">
+      <button
+        type="button"
+        pButton
+        icon="pi pi-ellipsis-v"
+        class="p-button-secondary p-button-text p-button-sm"
+        (click)="menuIncome.toggle($event)"
+      ></button>
+      <p-menu
+        #menuIncome
+        [model]="options"
+        [popup]="true"
+        (click)="onClickWidgetSettings(widgetType.IncomeByCategory)"
+      ></p-menu>
+    </div>
+
+    <p-chart
+      type="doughnut"
+      [data]="incomeTransactionsData"
+      [options]="incomeOptions"
+      [responsive]="true"
+      [height]="'500px'"
+    ></p-chart>
+  </div>
+</section>
+
+<section class="section-content">
+  <h4 class="section-title">Últimos movimientos</h4>
+  <p-divider></p-divider>
+
+  <div class="flex flex-col w-full">
+    <div>
+      <table class="w-full">
+        <thead>
+          <tr class="text-left">
+            <th class="table-header">Fecha</th>
+            <th class="table-header">Descripción</th>
+            <th class="table-header">Cuenta</th>
+            <th class="table-header">Monto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of recentTransactions$ | async">
+            <td class="table-cell">{{ transaction.createdDate | date }}</td>
+            <td class="table-cell">{{ transaction.description }}</td>
+            <td class="table-cell">{{ transaction.account.name }}</td>
+            <td class="table-cell">
+              <span
+                [ngClass]="
+                  !isIncome(transaction.transactionType)
+                    ? 'text-red-500'
+                    : 'text-green-500'
+                "
+                >{{ !isIncome(transaction.transactionType) ? "-" : ""
+                }}{{ transaction.amount | number }} COP</span
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<app-widget-settings
+  [(isVisible)]="isSettingsModalVisible"
+  [widgetType]="widgetSelected"
+  (periodSelected)="onPeriodSelected($event)"
+></app-widget-settings>

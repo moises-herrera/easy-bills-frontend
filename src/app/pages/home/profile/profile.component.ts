@@ -69,8 +69,9 @@ export class ProfileComponent {
    * Save the user profile.
    */
   saveProfile(): void {
+    const { password, id, ...user } = this._userService.user;
     this._userService
-      .updateUser(this._userService.user.id, this.profileForm.value)
+      .updateUser(id, { ...user, ...this.profileForm.value })
       .subscribe({
         next: () => {
           this._alertService.displayMessage({

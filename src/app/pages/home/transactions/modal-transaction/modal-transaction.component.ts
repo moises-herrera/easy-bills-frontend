@@ -17,6 +17,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { Account, Category, TransactionType } from 'src/models';
 import { AccountService } from 'src/app/services/account.service';
 import { CategoryService } from 'src/app/services/category.service';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-modal-transaction',
@@ -33,6 +34,7 @@ import { CategoryService } from 'src/app/services/category.service';
     ProgressSpinnerModule,
     InputTextareaModule,
     RadioButtonModule,
+    CalendarModule,
   ],
   templateUrl: './modal-transaction.component.html',
   styleUrls: ['./modal-transaction.component.css'],
@@ -98,6 +100,9 @@ export class ModalTransactionComponent {
   /** If the information is being saved. */
   isSaving = false;
 
+  /** Min date value for the created date field. */
+  minDate = new Date();
+
   /** Transaction form. */
   transactionForm = this._fb.nonNullable.group({
     amount: [0, [Validators.required, Validators.min(1)]],
@@ -105,6 +110,7 @@ export class ModalTransactionComponent {
     accountId: ['', Validators.required],
     categoryId: ['', Validators.required],
     transactionType: [0, Validators.required],
+    createdDate: [new Date(), Validators.required],
   });
 
   /** User accounts. */
@@ -143,6 +149,7 @@ export class ModalTransactionComponent {
               ...transaction,
               accountId: transaction.account.id,
               categoryId: transaction.category.id,
+              createdDate: new Date(transaction.createdDate)
             });
           },
         });
