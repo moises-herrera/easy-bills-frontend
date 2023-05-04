@@ -3,6 +3,7 @@ import { AccountsComponent } from './accounts/accounts.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { TransactionsComponent } from './transactions/transactions.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const modulesRoutes: Routes = [
   {
@@ -22,7 +23,11 @@ export const modulesRoutes: Routes = [
     component: TransactionsComponent,
   },
   {
+    path: 'profile',
+    component: ProfileComponent,
+  },
+  {
     path: '**',
-    redirectTo: 'dashboard'
-  }
+    redirectTo: 'dashboard',
+  },
 ];

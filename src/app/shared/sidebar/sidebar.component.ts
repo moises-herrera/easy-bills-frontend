@@ -37,6 +37,11 @@ export class SidebarComponent {
       url: 'transactions',
       icon: 'fa-solid fa-briefcase'
     },
+    {
+      title: 'Perfil',
+      url: 'profile',
+      icon: 'fa-solid fa-user'
+    }
   ];
 
   /**

@@ -95,6 +95,19 @@ export class UserService {
   }
 
   /**
+   * Update the information of a user.
+   *
+   * @param userId The user's id.
+   * @param user The user information.
+   * @returns An empty observable.
+   */
+  updateUser(userId: string, user: Partial<User>): Observable<void> {
+    return this._http
+      .put<void>(`${baseUrl}/users/${userId}`, user)
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
+  }
+
+  /**
    * Send an email confirmation to the user email address.
    *
    * @param userEmail User's email.

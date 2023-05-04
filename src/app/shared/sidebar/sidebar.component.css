@@ -1,13 +1,17 @@
 .sidebar {
-  @apply w-56 h-full min-h-screen border border-gray-200;
+  @apply w-60 h-full min-h-screen border border-gray-200;
 }
 
 .sidebar-item {
-  @apply p-4;
+  @apply my-1 mx-5 text-center;
 }
 
 .sidebar-item a {
-  @apply flex items-center space-x-3;
+  @apply flex items-center space-x-3 rounded-lg p-4;
+}
+
+.sidebar .sidebar-item-active {
+  @apply bg-blue-100;
 }
 
 .sidebar-item-active {

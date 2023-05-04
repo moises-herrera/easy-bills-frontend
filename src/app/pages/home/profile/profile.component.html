@@ -1,0 +1,70 @@
+<div class="section-content">
+  <h4 class="section-title">Información personal</h4>
+  <p-divider></p-divider>
+
+  <form
+    [formGroup]="profileForm"
+    (ngSubmit)="saveProfile()"
+    class="profile-form"
+  >
+    <fieldset class="form-group">
+      <div class="form-control">
+        <label htmlFor="firstName">Nombre</label>
+        <input formControlName="firstName" type="text" pInputText />
+      </div>
+
+      <div class="form-control">
+        <label htmlFor="lastName">Apellido</label>
+        <input formControlName="lastName" type="text" pInputText />
+      </div>
+    </fieldset>
+
+    <fieldset class="form-group">
+      <div class="form-control">
+        <label htmlFor="email">Email</label>
+        <input formControlName="email" type="email" pInputText />
+      </div>
+
+      <div class="form-control">
+        <label htmlFor="password">Contraseña</label>
+        <p-password
+          #password
+          formControlName="password"
+          [toggleMask]="true"
+          [weakLabel]="'Débil'"
+          [mediumLabel]="'Medio'"
+          [strongLabel]="'Fuerte'"
+          [promptLabel]="'Ingresa una contraseña'"
+        >
+          <ng-template pTemplate="footer">
+            <p class="mt-2">Sugerencias</p>
+            <ul class="pl-2 ml-2 mt-0 leading-6 list-disc">
+              <li>Al menos una letra minúscula</li>
+              <li>Al menos una letra mayúscula</li>
+              <li>Al menos un número</li>
+              <li>Mínimo 8 carácteres</li>
+            </ul>
+          </ng-template>
+        </p-password>
+      </div>
+    </fieldset>
+
+    <div class="flex space-x-4">
+      <button
+        type="submit"
+        pButton
+        label="Guardar"
+        class="form-button w-[200px] p-button-rounded p-button-info"
+        [disabled]="profileForm.invalid"
+      ></button>
+
+      <button
+        type="button"
+        pButton
+        label="Cancelar"
+        class="form-button w-[200px] p-button-rounded p-button-outlined p-button-secondary"
+        (click)="cancelChanges()"
+        ></button>
+    </div>
+  </form>
+</div>
