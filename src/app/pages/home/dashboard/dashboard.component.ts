@@ -76,6 +76,13 @@ export class DashboardComponent implements OnInit {
     this.getSpendingByCategory();
     this.getIncomeByCategory();
     this.getRecentTransactions();
+    this.setChartOptions();
+  }
+
+  /**
+   * Set the chart options.
+   */
+  setChartOptions(): void {
     let documentStyle = getComputedStyle(document.documentElement);
     let textColor = documentStyle.getPropertyValue('--text-color');
 
@@ -209,7 +216,8 @@ export class DashboardComponent implements OnInit {
 
     this.recentTransactions$ = this._transactionsService.getTransactions(
       from,
-      to
+      to,
+      5
     );
   }
 

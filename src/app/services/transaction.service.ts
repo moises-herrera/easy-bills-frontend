@@ -23,9 +23,10 @@ export class TransactionService {
    */
   getTransactions(
     from: string = '',
-    to: string = ''
+    to: string = '',
+    limit: number = 0
   ): Observable<TransactionInfo[]> {
-    const params = new HttpParams().set('from', from).set('to', to);
+    const params = new HttpParams().set('from', from).set('to', to).set('limit', limit);
 
     return this._http
       .get<TransactionInfo[]>(baseUrl, { params })
