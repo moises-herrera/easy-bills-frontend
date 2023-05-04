@@ -1,5 +1,15 @@
 <div class="section-content">
-  <h4 class="section-title">Transacciones</h4>
+  <div class="flex justify-between">
+    <h4 class="section-title">Transacciones</h4>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-file"
+      label="Generar reporte"
+      class="p-button-secondary p-button-outlined p-button-sm"
+      (click)="generateTransactionsListPDF()"
+    ></button>
+  </div>
   <p-divider></p-divider>
 
   <span class="p-input-icon-left">
@@ -26,62 +36,66 @@
   <p-progressSpinner strokeWidth="4"></p-progressSpinner>
 </div>
 
-<article
-  *ngFor="let transaction of transactions$ | async"
-  class="section-content"
->
-  <div class="grid grid-cols-6 items-center">
-    <!-- Category -->
-    <div class="flex items-center space-x-4">
-      <div
-        class="flex w-[40px] h-[40px] rounded-full justify-center items-center"
-        [style.background-color]="transaction.category.color || '#000'"
-      >
-        <i [ngClass]="transaction.category.icon" class="text-white"></i>
+<div #dataToExport>
+  <article
+    *ngFor="let transaction of transactions$ | async"
+    class="section-content"
+  >
+    <div class="grid grid-cols-7 items-center">
+      <!-- Category -->
+      <div class="flex items-center space-x-4 col-span-2">
+        <div
+          class="flex w-[40px] h-[40px] rounded-full justify-center items-center"
+          [style.background-color]="transaction.category.color || '#000'"
+        >
+          <i [ngClass]="transaction.category.icon" class="text-white"></i>
+        </div>
+        <div class="font-semibold truncate w-full">
+          {{ transaction.category.name }}
+        </div>
       </div>
-      <div class="font-semibold truncate">{{ transaction.category.name }}</div>
-    </div>
 
-    <!-- Account -->
-    <div class="font-semibold truncate">
-      <span>{{ transaction.account.name }}</span>
-    </div>
+      <!-- Account -->
+      <div class="font-semibold truncate">
+        <span>{{ transaction.account.name }}</span>
+      </div>
 
-    <!-- Transaction info -->
-    <div class="text-gray-400 truncate">
-      <span>{{ transaction.description }}</span>
+      <!-- Transaction info -->
+      <div class="text-gray-400 truncate">
+        <span>{{ transaction.description }}</span>
+      </div>
+      <div class="truncate">
+        <span>{{ transaction.createdDate | date }}</span>
+      </div>
+      <div class="font-semibold truncate">
+        <span
+          [ngClass]="
+            !isIncome(transaction.transactionType)
+              ? 'text-red-500'
+              : 'text-green-500'
+          "
+          >{{ !isIncome(transaction.transactionType) ? "-" : ""
+          }}{{ transaction.amount | number }} COP</span
+        >
+      </div>
+      <div class="text-right">
+        <button
+          type="button"
+          pButton
+          icon="pi pi-ellipsis-v"
+          class="p-button-secondary p-button-text p-button-sm"
+          (click)="menu.toggle($event)"
+        ></button>
+        <p-menu
+          #menu
+          [model]="options"
+          [popup]="true"
+          (click)="onClickTransaction(transaction.id)"
+        ></p-menu>
+      </div>
     </div>
-    <div class="truncate">
-      <span>{{ transaction.createdDate | date }}</span>
-    </div>
-    <div class="font-semibold truncate">
-      <span
-        [ngClass]="
-          !isIncome(transaction.transactionType)
-            ? 'text-red-500'
-            : 'text-green-500'
-        "
-        >{{ !isIncome(transaction.transactionType) ? "-" : ""
-        }}{{ transaction.amount | number }} COP</span
-      >
-    </div>
-    <div class="text-right">
-      <button
-        type="button"
-        pButton
-        icon="pi pi-ellipsis-v"
-        class="p-button-secondary p-button-text p-button-sm"
-        (click)="menu.toggle($event)"
-      ></button>
-      <p-menu
-        #menu
-        [model]="options"
-        [popup]="true"
-        (click)="onClickTransaction(transaction.id)"
-      ></p-menu>
-    </div>
-  </div>
-</article>
+  </article>
+</div>
 
 <app-modal-transaction
   [(isVisible)]="isModalVisible"
