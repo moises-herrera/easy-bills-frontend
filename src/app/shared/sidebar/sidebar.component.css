@@ -6,6 +6,10 @@
   @apply p-4;
 }
 
+.sidebar-item a {
+  @apply flex items-center space-x-3;
+}
+
 .sidebar-item-active {
   @apply font-bold text-blue-600;
 }

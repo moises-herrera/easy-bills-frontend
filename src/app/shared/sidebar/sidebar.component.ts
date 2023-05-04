@@ -20,18 +20,22 @@ export class SidebarComponent {
     {
       title: 'Dashboard',
       url: 'dashboard',
+      icon: 'fa-solid fa-chart-line'
     },
     {
       title: 'Cuentas',
       url: 'accounts',
+      icon: 'fa-solid fa-address-card'
     },
     {
       title: 'Categorías',
       url: 'categories',
+      icon: 'fa-solid fa-tag'
     },
     {
       title: 'Transacciones',
       url: 'transactions',
+      icon: 'fa-solid fa-briefcase'
     },
   ];
 

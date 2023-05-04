@@ -11,11 +11,15 @@
   <ul>
     <li *ngFor="let item of links" class="sidebar-item">
       <a [routerLink]="item.url" routerLinkActive="sidebar-item-active">
-        {{ item.title }}
+        <i [ngClass]="item.icon || ''"></i>
+        <span>{{ item.title }}</span>
       </a>
     </li>
     <li class="sidebar-item cursor-pointer">
-      <a (click)="logout()">Cerrar sesión</a>
+      <a (click)="logout()">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        <span>Cerrar sesión</span>
+      </a>
     </li>
   </ul>
 </nav>
