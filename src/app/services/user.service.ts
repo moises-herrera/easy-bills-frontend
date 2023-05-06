@@ -72,7 +72,7 @@ export class UserService {
    */
   registerUser(user: RegisterUser): Observable<void> {
     return this._http
-      .post<void>(`${baseUrl}/users`, user)
+      .post<void>(`${baseUrl}/users/register`, user)
       .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 
