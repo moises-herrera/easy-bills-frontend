@@ -8,12 +8,13 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MenuModule } from 'primeng/menu';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { CategoryService } from 'src/app/services/category.service';
-import { Category } from 'src/models';
+import { Category, User } from 'src/models';
 import { Observable, map, tap } from 'rxjs';
 import { ModalCategoryComponent } from './modal-category/modal-category.component';
 import { MenuItem } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from 'src/app/services/alert.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-categories',
@@ -33,6 +34,9 @@ import { AlertService } from 'src/app/services/alert.service';
   styleUrls: ['./categories.component.css'],
 })
 export class CategoriesComponent {
+  /** User service. */
+  private _userService = inject(UserService);
+
   /** Category service. */
   private _categoryService = inject(CategoryService);
 
@@ -71,6 +75,15 @@ export class CategoriesComponent {
       },
     },
   ];
+
+  /**
+   * Get the current user.
+   *
+   * @returns The current user.
+   */
+  get user(): User {
+    return this._userService.user;
+  }
 
   /**
    * Initial life cycle method.
