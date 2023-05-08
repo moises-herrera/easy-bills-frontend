@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://localhost:53161/api',
+  baseUrl: 'appeasybills.azurewebsites.net/api',
   accessTokenLifetime: 86400000
 }
