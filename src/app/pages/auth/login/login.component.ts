@@ -15,6 +15,7 @@ import { Router, RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormValidator } from 'src/helpers';
 import { errorTailorImports } from '@ngneat/error-tailor';
+import { EMPTY, switchMap, tap } from 'rxjs';
 
 /**
  * Login form page.
@@ -29,7 +30,7 @@ import { errorTailorImports } from '@ngneat/error-tailor';
     InputTextModule,
     ButtonModule,
     MessagesModule,
-    errorTailorImports
+    errorTailorImports,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
@@ -46,28 +47,52 @@ export class LoginComponent {
 
   /** Login form. */
   loginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.pattern(FormValidator.emailPattern)]],
+    email: [
+      '',
+      [Validators.required, Validators.pattern(FormValidator.emailPattern)],
+    ],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   constructor(private fb: FormBuilder) {}
 
+  /**
+   * Login user.
+   */
   loginUser(): void {
-    this._userService.loginUser(this.loginForm.value).subscribe({
-      next: () => {
-        this._alertService.displayMessage({
-          severity: 'success',
-          summary: 'Sesión iniciada exitosamente',
-        });
-        this._router.navigateByUrl('/home');
-      },
-      error: (err: unknown) => {
-        this._alertService.displayMessage({
-          severity: 'error',
-          summary:
-            (err as HttpErrorResponse)?.error?.error || 'Ha ocurrido un error',
-        });
-      },
-    });
+    this._userService
+      .loginUser(this.loginForm.value)
+      .pipe(
+        switchMap(({ user }) => {
+          if (user.isEmailVerified) {
+            this._alertService.displayMessage({
+              severity: 'success',
+              summary: 'Sesión iniciada exitosamente',
+            });
+            this._router.navigateByUrl('/home');
+            return EMPTY;
+          }
+
+          return this._userService
+            .sendEmailConfirmation(this.loginForm.value.email)
+            .pipe(
+              tap(() => {
+                this._router.navigateByUrl('/auth/confirm-email', {
+                  state: { email: user.email },
+                });
+              })
+            );
+        })
+      )
+      .subscribe({
+        error: (err: unknown) => {
+          this._alertService.displayMessage({
+            severity: 'error',
+            summary:
+              (err as HttpErrorResponse)?.error?.error ||
+              'Ha ocurrido un error',
+          });
+        },
+      });
   }
 }

@@ -2,6 +2,12 @@
   <h4 class="section-title">Información personal</h4>
   <p-divider></p-divider>
 
+  <p-messages *ngIf="!user.isEmailVerified" severity="warn">
+    <ng-template pTemplate>
+      <div>Por favor, confirma tu correo electrónico.</div>
+    </ng-template>
+  </p-messages>
+
   <form
     [formGroup]="profileForm"
     (ngSubmit)="saveProfile()"
@@ -49,6 +55,15 @@
       </div>
     </fieldset>
 
+    <button
+      *ngIf="!user.isEmailVerified"
+      type="button"
+      pButton
+      label="Confirmar email"
+      class="mb-5 w-[200px] p-button-rounded p-button-outlined p-button-info"
+      (click)="sendEmailConfirmation()"
+    ></button>
+
     <div class="flex space-x-4">
       <button
         type="submit"
@@ -64,7 +79,7 @@
         label="Cancelar"
         class="form-button w-[200px] p-button-rounded p-button-outlined p-button-secondary"
         (click)="cancelChanges()"
-        ></button>
+      ></button>
     </div>
   </form>
 </div>

@@ -10,6 +10,8 @@ import { errorTailorImports } from '@ngneat/error-tailor';
 import { ButtonModule } from 'primeng/button';
 import { AlertService } from 'src/app/services/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MessagesModule } from 'primeng/messages';
+import { User } from 'src/models';
 
 /**
  * User profile.
@@ -25,6 +27,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     PasswordModule,
     ButtonModule,
     errorTailorImports,
+    MessagesModule,
   ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
@@ -53,6 +56,15 @@ export class ProfileComponent {
     ],
   });
 
+  /**
+   * Get the current user.
+   *
+   * @returns The current user.
+   */
+  get user(): User {
+    return this._userService.user;
+  }
+
   constructor() {
     this.setUserInfo();
   }
@@ -61,7 +73,7 @@ export class ProfileComponent {
    * Set the user info on the form.
    */
   private setUserInfo(): void {
-    const { password, ...user } = this._userService.user;
+    const { password, ...user } = this.user;
     this.profileForm.patchValue({ ...user });
   }
 
@@ -69,7 +81,7 @@ export class ProfileComponent {
    * Save the user profile.
    */
   saveProfile(): void {
-    const { password, id, ...user } = this._userService.user;
+    const { password, id, ...user } = this.user;
     this._userService
       .updateUser(id, { ...user, ...this.profileForm.value })
       .subscribe({
@@ -95,5 +107,26 @@ export class ProfileComponent {
    */
   cancelChanges(): void {
     this.setUserInfo();
+  }
+
+  /**
+   * Send the email confirmation to the user.
+   */
+  sendEmailConfirmation(): void {
+    this._userService.sendEmailConfirmation(this.user.email).subscribe({
+      next: () => {
+        this._alertService.displayMessage({
+          severity: 'success',
+          summary: 'Correo enviado exitosamente'
+        });
+      },
+      error: (err: unknown) => {
+        this._alertService.displayMessage({
+          severity: 'error',
+          summary:
+            (err as HttpErrorResponse)?.error?.error || 'Ha ocurrido un error',
+        });
+      }
+    });
   }
 }

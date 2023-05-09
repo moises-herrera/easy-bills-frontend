@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, catchError, map, of, shareReplay, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
@@ -162,5 +162,17 @@ export class UserService {
   logout(): void {
     localStorage.clear();
     this._router.navigateByUrl('/auth/login');
+  }
+
+  verifyEmail(userId: string, token: string): Observable<User> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const params = new HttpParams().set('userId', userId);
+
+    return this._http.post<User>(
+      `${baseUrl}/users/verify-email?userId=${userId}`,
+      {
+        headers,
+      }
+    );
   }
 }
