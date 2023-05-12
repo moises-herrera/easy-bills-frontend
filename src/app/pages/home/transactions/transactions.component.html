@@ -36,70 +36,77 @@
   <p-progressSpinner strokeWidth="4"></p-progressSpinner>
 </div>
 
-<div #dataToExport>
-  <article
-    *ngFor="let transaction of transactions$ | async"
-    class="section-content"
-  >
-    <div class="grid grid-cols-7 items-center">
-      <!-- Category -->
-      <div class="flex items-center space-x-4 col-span-2">
-        <div
-          class="flex w-[40px] h-[40px] rounded-full justify-center items-center"
-          [style.background-color]="transaction.category.color || '#000'"
-        >
-          <i [ngClass]="transaction.category.icon" class="text-white"></i>
+<ng-container *ngIf="{ data: (transactions$ | async) } as transactions">
+  <div #dataToExport *ngIf="transactions.data?.length">
+    <article
+      *ngFor="let transaction of transactions.data"
+      class="section-content"
+    >
+      <div class="grid grid-cols-7 items-center">
+        <!-- Category -->
+        <div class="flex items-center space-x-4 col-span-2">
+          <div
+            class="flex w-[40px] h-[40px] rounded-full justify-center items-center"
+            [style.background-color]="transaction.category.color || '#000'"
+          >
+            <i [ngClass]="transaction.category.icon" class="text-white"></i>
+          </div>
+          <div class="font-semibold truncate w-full">
+            {{ transaction.category.name }}
+          </div>
         </div>
-        <div class="font-semibold truncate w-full">
-          {{ transaction.category.name }}
+
+        <!-- Account -->
+        <div class="font-semibold truncate">
+          <span>{{ transaction.account.name }}</span>
+        </div>
+
+        <!-- Transaction info -->
+        <div class="text-gray-400 truncate">
+          <span>{{ transaction.description }}</span>
+        </div>
+        <div class="truncate">
+          <span>{{ transaction.createdDate | date }}</span>
+        </div>
+        <div class="font-semibold truncate">
+          <span
+            [ngClass]="
+              !isIncome(transaction.transactionType)
+                ? 'text-red-500'
+                : 'text-green-500'
+            "
+            >{{ !isIncome(transaction.transactionType) ? "-" : ""
+            }}{{ transaction.amount | number }} COP</span
+          >
+        </div>
+        <div class="text-right">
+          <button
+            type="button"
+            pButton
+            icon="pi pi-ellipsis-v"
+            class="p-button-secondary p-button-text p-button-sm"
+            (click)="menu.toggle($event)"
+          ></button>
+          <p-menu
+            #menu
+            [model]="options"
+            [popup]="true"
+            (click)="onClickTransaction(transaction.id)"
+          ></p-menu>
         </div>
       </div>
+    </article>
+  </div>
 
-      <!-- Account -->
-      <div class="font-semibold truncate">
-        <span>{{ transaction.account.name }}</span>
-      </div>
-
-      <!-- Transaction info -->
-      <div class="text-gray-400 truncate">
-        <span>{{ transaction.description }}</span>
-      </div>
-      <div class="truncate">
-        <span>{{ transaction.createdDate | date }}</span>
-      </div>
-      <div class="font-semibold truncate">
-        <span
-          [ngClass]="
-            !isIncome(transaction.transactionType)
-              ? 'text-red-500'
-              : 'text-green-500'
-          "
-          >{{ !isIncome(transaction.transactionType) ? "-" : ""
-          }}{{ transaction.amount | number }} COP</span
-        >
-      </div>
-      <div class="text-right">
-        <button
-          type="button"
-          pButton
-          icon="pi pi-ellipsis-v"
-          class="p-button-secondary p-button-text p-button-sm"
-          (click)="menu.toggle($event)"
-        ></button>
-        <p-menu
-          #menu
-          [model]="options"
-          [popup]="true"
-          (click)="onClickTransaction(transaction.id)"
-        ></p-menu>
-      </div>
-    </div>
-  </article>
-</div>
+  <app-no-data
+    *ngIf="!isLoading && !transactions.data?.length"
+  ></app-no-data>
+</ng-container>
 
 <app-modal-transaction
   [(isVisible)]="isModalVisible"
   [(transactionId)]="transactionId"
+  (reloadData)="getTransactions()"
 ></app-modal-transaction>
 
 <p-confirmDialog

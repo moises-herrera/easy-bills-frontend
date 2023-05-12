@@ -26,54 +26,65 @@
   <p-progressSpinner strokeWidth="4"></p-progressSpinner>
 </div>
 
-<article *ngFor="let account of accounts$ | async" class="section-content">
-  <div class="grid grid-cols-4 items-center">
-    <div class="flex items-center space-x-4">
-      <div
-        class="w-[40px] h-[40px] flex justify-center items-center rounded-full text-white"
-        [ngClass]="
-          isBankAccount(account.typeAccount) ? 'bg-gray-400' : 'bg-green-600'
-        "
-      >
-        <i
-          [ngClass]="
-            isBankAccount(account.typeAccount)
-              ? 'fa-solid fa-building-columns'
-              : 'fa-solid fa-wallet'
-          "
-        ></i>
+<ng-container *ngIf="{ data: (accounts$ | async) } as accounts">
+  <div *ngIf="accounts.data?.length">
+    <article *ngFor="let account of accounts.data" class="section-content">
+      <div class="grid grid-cols-4 items-center">
+        <div class="flex items-center space-x-4">
+          <div
+            class="w-[40px] h-[40px] flex justify-center items-center rounded-full text-white"
+            [ngClass]="
+              isBankAccount(account.typeAccount)
+                ? 'bg-gray-400'
+                : 'bg-green-600'
+            "
+          >
+            <i
+              [ngClass]="
+                isBankAccount(account.typeAccount)
+                  ? 'fa-solid fa-building-columns'
+                  : 'fa-solid fa-wallet'
+              "
+            ></i>
+          </div>
+          <span class="font-semibold truncate">{{ account.name }}</span>
+        </div>
+        <div class="text-gray-400 truncate">
+          {{ account.typeAccount | typeAccount }}
+        </div>
+        <div>
+          <span class="font-semibold truncate"
+            >{{ account.balance | number }} COP</span
+          >
+        </div>
+        <div class="text-right">
+          <button
+            type="button"
+            pButton
+            icon="pi pi-ellipsis-v"
+            class="p-button-secondary p-button-text p-button-sm"
+            (click)="menu.toggle($event)"
+          ></button>
+          <p-menu
+            #menu
+            [model]="options"
+            [popup]="true"
+            (click)="onClickAccount(account.id)"
+          ></p-menu>
+        </div>
       </div>
-      <span class="font-semibold truncate">{{ account.name }}</span>
-    </div>
-    <div class="text-gray-400 truncate">
-      {{ account.typeAccount | typeAccount }}
-    </div>
-    <div>
-      <span class="font-semibold truncate"
-        >{{ account.balance | number }} COP</span
-      >
-    </div>
-    <div class="text-right">
-      <button
-        type="button"
-        pButton
-        icon="pi pi-ellipsis-v"
-        class="p-button-secondary p-button-text p-button-sm"
-        (click)="menu.toggle($event)"
-      ></button>
-      <p-menu
-        #menu
-        [model]="options"
-        [popup]="true"
-        (click)="onClickAccount(account.id)"
-      ></p-menu>
-    </div>
+    </article>
   </div>
-</article>
+
+  <app-no-data
+    *ngIf="!isLoading && !accounts.data?.length"
+  ></app-no-data>
+</ng-container>
 
 <app-modal-account
   [(isVisible)]="isModalVisible"
   [(accountId)]="accountId"
+  (reloadData)="getAccounts()"
 ></app-modal-account>
 
 <p-confirmDialog

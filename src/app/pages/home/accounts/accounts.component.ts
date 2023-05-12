@@ -15,6 +15,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MenuItem } from 'primeng/api';
 import { AlertService } from 'src/app/services/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NoDataComponent } from 'src/app/shared/no-data/no-data.component';
 
 @Component({
   selector: 'app-accounts',
@@ -30,6 +31,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     ModalAccountComponent,
     MenuModule,
     ConfirmDialogModule,
+    NoDataComponent,
   ],
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.css'],

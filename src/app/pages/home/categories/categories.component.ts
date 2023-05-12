@@ -15,6 +15,7 @@ import { MenuItem } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from 'src/app/services/alert.service';
 import { UserService } from 'src/app/services/user.service';
+import { NoDataComponent } from 'src/app/shared/no-data/no-data.component';
 
 @Component({
   selector: 'app-categories',
@@ -29,6 +30,7 @@ import { UserService } from 'src/app/services/user.service';
     ModalCategoryComponent,
     MenuModule,
     ConfirmDialogModule,
+    NoDataComponent
   ],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css'],

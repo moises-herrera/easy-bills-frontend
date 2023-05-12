@@ -16,6 +16,7 @@ import { TransactionInfo, TransactionType } from 'src/models';
 import { ModalTransactionComponent } from './modal-transaction/modal-transaction.component';
 import jsPDF from 'jspdf';
 import domToImage from 'dom-to-image';
+import { NoDataComponent } from 'src/app/shared/no-data/no-data.component';
 
 @Component({
   selector: 'app-transactions',
@@ -30,6 +31,7 @@ import domToImage from 'dom-to-image';
     MenuModule,
     ModalTransactionComponent,
     ConfirmDialogModule,
+    NoDataComponent,
   ],
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.css'],

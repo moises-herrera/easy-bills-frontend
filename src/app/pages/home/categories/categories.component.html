@@ -26,40 +26,46 @@
   <p-progressSpinner strokeWidth="4"></p-progressSpinner>
 </div>
 
-<article *ngFor="let category of categories$ | async" class="section-content">
-  <div class="flex justify-between items-center flex-wrap">
-    <div class="flex items-center space-x-4">
-      <div
-        class="flex w-[40px] h-[40px] rounded-full justify-center items-center"
-        [style.background-color]="category.color || '#000'"
-      >
-        <i [ngClass]="category.icon" class="text-white"></i>
+<ng-container *ngIf="{ data: (categories$ | async) } as categories">
+  <div *ngIf="categories.data?.length">
+    <article *ngFor="let category of categories.data" class="section-content">
+      <div class="flex justify-between items-center flex-wrap">
+        <div class="flex items-center space-x-4">
+          <div
+            class="flex w-[40px] h-[40px] rounded-full justify-center items-center"
+            [style.background-color]="category.color || '#000'"
+          >
+            <i [ngClass]="category.icon" class="text-white"></i>
+          </div>
+          <div class="font-semibold truncate">{{ category.name }}</div>
+        </div>
+        <div>
+          <span class="text-gray-400 truncate">{{ category.description }}</span>
+        </div>
+        <div>
+          <ng-container *ngIf="category.userId === user.id">
+            <button
+              #btn
+              type="button"
+              pButton
+              icon="pi pi-ellipsis-v"
+              class="p-button-secondary p-button-text p-button-sm"
+              (click)="menu.toggle($event)"
+            ></button>
+            <p-menu
+              #menu
+              [model]="options"
+              [popup]="true"
+              (click)="onClickCategory(category.id)"
+            ></p-menu>
+          </ng-container>
+        </div>
       </div>
-      <div class="font-semibold truncate">{{ category.name }}</div>
-    </div>
-    <div>
-      <span class="text-gray-400 truncate">{{ category.description }}</span>
-    </div>
-    <div>
-      <ng-container *ngIf="category.userId === user.id">
-        <button
-          #btn
-          type="button"
-          pButton
-          icon="pi pi-ellipsis-v"
-          class="p-button-secondary p-button-text p-button-sm"
-          (click)="menu.toggle($event)"
-        ></button>
-        <p-menu
-          #menu
-          [model]="options"
-          [popup]="true"
-          (click)="onClickCategory(category.id)"
-        ></p-menu>
-      </ng-container>
-    </div>
+    </article>
   </div>
-</article>
+
+  <app-no-data *ngIf="!isLoading && !categories.data?.length"></app-no-data>
+</ng-container>
 
 <app-modal-category
   [(isVisible)]="isModalVisible"
