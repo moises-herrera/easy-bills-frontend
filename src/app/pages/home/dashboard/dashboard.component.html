@@ -2,57 +2,13 @@
   <h4 class="section-title">Dashboard</h4>
 </div>
 
-<section class="flex w-full">
-  <div class="section-content w-1/2">
-    <div class="text-right">
-      <button
-        type="button"
-        pButton
-        icon="pi pi-ellipsis-v"
-        class="p-button-secondary p-button-text p-button-sm"
-        (click)="menuSpending.toggle($event)"
-      ></button>
-      <p-menu
-        #menuSpending
-        [model]="options"
-        [popup]="true"
-        (click)="onClickWidgetSettings(widgetType.SpendingByCategory)"
-      ></p-menu>
-    </div>
-
-    <p-chart
-      type="doughnut"
-      [data]="spendingTransactionsData"
-      [options]="spendingOptions"
-      [responsive]="true"
-      [height]="'500px'"
-    ></p-chart>
+<section class="flex">
+  <div class="section-content w-1/2 min-h-[578px] h-auto">
+    <app-spending-transactions-widget></app-spending-transactions-widget>
   </div>
 
-  <div class="section-content w-1/2">
-    <div class="text-right">
-      <button
-        type="button"
-        pButton
-        icon="pi pi-ellipsis-v"
-        class="p-button-secondary p-button-text p-button-sm"
-        (click)="menuIncome.toggle($event)"
-      ></button>
-      <p-menu
-        #menuIncome
-        [model]="options"
-        [popup]="true"
-        (click)="onClickWidgetSettings(widgetType.IncomeByCategory)"
-      ></p-menu>
-    </div>
-
-    <p-chart
-      type="doughnut"
-      [data]="incomeTransactionsData"
-      [options]="incomeOptions"
-      [responsive]="true"
-      [height]="'500px'"
-    ></p-chart>
+  <div class="section-content w-1/2 min-h-[578px] h-auto">
+    <app-income-transactions-widget></app-income-transactions-widget>
   </div>
 </section>
 
@@ -61,8 +17,14 @@
   <p-divider></p-divider>
 
   <div class="flex flex-col w-full">
-    <div>
-      <table class="w-full">
+    <div *ngIf="isLoadingRecentTransactions" class="loading-indicator h-full">
+      <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+    </div>
+
+    <ng-container
+      *ngIf="{ data: recentTransactions$ | async } as recentTransactions"
+    >
+      <table *ngIf="recentTransactions.data?.length" class="w-full">
         <thead>
           <tr class="text-left">
             <th class="table-header">Fecha</th>
@@ -72,7 +34,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let transaction of recentTransactions$ | async">
+          <tr *ngFor="let transaction of recentTransactions.data">
             <td class="table-cell">{{ transaction.createdDate | date }}</td>
             <td class="table-cell">{{ transaction.description }}</td>
             <td class="table-cell">{{ transaction.account.name }}</td>
@@ -90,12 +52,10 @@
           </tr>
         </tbody>
       </table>
-    </div>
+
+      <app-no-data
+        *ngIf="!isLoadingRecentTransactions && !recentTransactions.data?.length"
+      ></app-no-data>
+    </ng-container>
   </div>
 </section>
-
-<app-widget-settings
-  [(isVisible)]="isSettingsModalVisible"
-  [widgetType]="widgetSelected"
-  (periodSelected)="onPeriodSelected($event)"
-></app-widget-settings>

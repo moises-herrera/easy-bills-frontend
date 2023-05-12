@@ -1,0 +1,46 @@
+<ng-container
+  *ngIf="
+    !isLoading &&
+      incomeTransactionsData &&
+      incomeTransactionsData.datasets[0].data?.length > 0
+  "
+>
+  <div class="text-right">
+    <button
+      type="button"
+      pButton
+      icon="pi pi-ellipsis-v"
+      class="p-button-secondary p-button-text p-button-sm"
+      (click)="menuIncome.toggle($event)"
+    ></button>
+    <p-menu #menuIncome [model]="options" [popup]="true"></p-menu>
+  </div>
+
+  <p-chart
+    type="doughnut"
+    [data]="incomeTransactionsData"
+    [options]="incomeOptions"
+    [responsive]="true"
+    [height]="'500px'"
+  ></p-chart>
+</ng-container>
+
+<div *ngIf="isLoading" class="loading-indicator h-full">
+  <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+</div>
+
+<app-no-data
+  *ngIf="
+    !isLoading &&
+    incomeTransactionsData &&
+    !incomeTransactionsData.datasets[0].data?.length
+  "
+  imageSrc="assets/pie-chart.svg"
+  message="No se encontraron ingresos registrados."
+></app-no-data>
+
+<app-widget-settings
+  [(isVisible)]="isSettingsModalVisible"
+  [widgetType]="widgetType.SpendingByCategory"
+  (periodSelected)="onPeriodSelected($event)"
+></app-widget-settings>

@@ -68,7 +68,7 @@ export class WidgetSettingsComponent {
       value: TimePeriodType.Quarter,
     },
     {
-      name: 'Últimos año',
+      name: 'Último año',
       value: TimePeriodType.Year,
     },
     {
