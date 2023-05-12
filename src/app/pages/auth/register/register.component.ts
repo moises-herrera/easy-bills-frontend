@@ -79,12 +79,16 @@ export class RegisterComponent {
     } as AbstractControlOptions
   );
 
+  /** Indicates if the form is loading. */
+  isLoading = false;
+
   constructor(private fb: FormBuilder) {}
 
   /**
    * Register user.
    */
   registerUser(): void {
+    this.isLoading = true;
     this._userService
       .registerUser(this.registerForm.value)
       .pipe(
@@ -101,6 +105,7 @@ export class RegisterComponent {
       )
       .subscribe({
         next: () => {
+          this.isLoading = false;
           this._router.navigateByUrl('/auth/confirm-email', {
             state: {
               email: this.registerForm.value.email,
@@ -108,6 +113,7 @@ export class RegisterComponent {
           });
         },
         error: (err: unknown) => {
+          this.isLoading = false;
           this._alertService.displayMessage({
             severity: 'error',
             summary:

@@ -17,7 +17,8 @@
       pButton
       label="Iniciar sesión"
       class="form-button p-button-rounded p-button-info"
-      [disabled]="loginForm.invalid"
+      [loading]="isLoading"
+      [disabled]="loginForm.invalid || isLoading"
     ></button>
 
     <div>

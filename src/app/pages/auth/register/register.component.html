@@ -61,7 +61,8 @@
       pButton
       label="Registrarse"
       class="form-button p-button-rounded p-button-info"
-      [disabled]="registerForm.invalid"
+      [loading]="isLoading"
+      [disabled]="registerForm.invalid || isLoading"
     ></button>
 
     <div>

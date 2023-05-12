@@ -61,6 +61,8 @@
       pButton
       label="Confirmar email"
       class="mb-5 w-[200px] p-button-rounded p-button-outlined p-button-info"
+      [loading]="isSendingEmailConfirmation"
+      [disabled]="isSendingEmailConfirmation"
       (click)="sendEmailConfirmation()"
     ></button>
 
@@ -70,7 +72,8 @@
         pButton
         label="Guardar"
         class="form-button w-[200px] p-button-rounded p-button-info"
-        [disabled]="profileForm.invalid"
+        [loading]="isSaving"
+        [disabled]="profileForm.invalid || isSaving"
       ></button>
 
       <button
@@ -78,6 +81,7 @@
         pButton
         label="Cancelar"
         class="form-button w-[200px] p-button-rounded p-button-outlined p-button-secondary"
+        [disabled]="isSaving"
         (click)="cancelChanges()"
       ></button>
     </div>

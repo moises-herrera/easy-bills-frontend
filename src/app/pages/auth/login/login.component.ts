@@ -54,12 +54,16 @@ export class LoginComponent {
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
+  /** Indicates if the form is loading. */
+  isLoading = false;
+
   constructor(private fb: FormBuilder) {}
 
   /**
    * Login user.
    */
   loginUser(): void {
+    this.isLoading = true;
     this._userService
       .loginUser(this.loginForm.value)
       .pipe(
@@ -85,7 +89,9 @@ export class LoginComponent {
         })
       )
       .subscribe({
+        complete: () => (this.isLoading = false),
         error: (err: unknown) => {
+          this.isLoading = false;
           this._alertService.displayMessage({
             severity: 'error',
             summary:

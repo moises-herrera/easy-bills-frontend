@@ -56,6 +56,12 @@ export class ProfileComponent {
     ],
   });
 
+  /** Whether the user info is being saved. */
+  isSaving = false;
+
+  /** Whether the email confirmation is being sent. */
+  isSendingEmailConfirmation = false;
+
   /**
    * Get the current user.
    *
@@ -81,17 +87,22 @@ export class ProfileComponent {
    * Save the user profile.
    */
   saveProfile(): void {
+    this.isSaving = true;
     const { password, id, ...user } = this.user;
     this._userService
       .updateUser(id, { ...user, ...this.profileForm.value })
       .subscribe({
-        next: () => {
+        next: (user) => {
+          this.isSaving = false;
+          this._userService.user = { ...user };
+          this.setUserInfo();
           this._alertService.displayMessage({
             severity: 'success',
             summary: 'Información guardada exitosamente',
           });
         },
         error: (err: unknown) => {
+          this.isSaving = false;
           this._alertService.displayMessage({
             severity: 'error',
             summary:
@@ -113,20 +124,23 @@ export class ProfileComponent {
    * Send the email confirmation to the user.
    */
   sendEmailConfirmation(): void {
+    this.isSendingEmailConfirmation = true;
     this._userService.sendEmailConfirmation(this.user.email).subscribe({
       next: () => {
+        this.isSendingEmailConfirmation = false;
         this._alertService.displayMessage({
           severity: 'success',
-          summary: 'Correo enviado exitosamente'
+          summary: 'Correo enviado exitosamente',
         });
       },
       error: (err: unknown) => {
+        this.isSendingEmailConfirmation = false;
         this._alertService.displayMessage({
           severity: 'error',
           summary:
             (err as HttpErrorResponse)?.error?.error || 'Ha ocurrido un error',
         });
-      }
+      },
     });
   }
 }
