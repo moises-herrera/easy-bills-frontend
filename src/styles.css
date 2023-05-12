@@ -61,11 +61,11 @@ html, body {
 }
 
 .loading-indicator {
-  @apply w-full h-full min-h-[700px] flex justify-center items-center;
+  @apply w-full h-full flex justify-center items-center;
 }
 
 .modal {
-  @apply w-[500px] h-1/2 min-h-[530px];
+  @apply w-[500px] h-auto;
 }
 
 .confirm-dialog {
