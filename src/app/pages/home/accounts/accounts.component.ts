@@ -127,24 +127,27 @@ export class AccountsComponent implements OnInit {
    */
   deleteAccount(): void {
     this._alertService.displayConfirm(() => {
-      this._accountService.deleteAccount(this.accountId).subscribe({
-        next: () => {
-          this._alertService.displayMessage({
-            severity: 'success',
-            summary: 'La cuenta ha sido eliminada',
-          });
-          this.getAccounts();
-        },
-        error: (err: unknown) => {
-          this.isLoading = false;
-          this._alertService.displayMessage({
-            severity: 'error',
-            summary:
-              (err as HttpErrorResponse)?.error?.error ||
-              'Ha ocurrido un error',
-          });
-        },
-      });
+      this._accountService
+        .deleteAccount(this.accountId)
+        .subscribe({
+          next: () => {
+            this._alertService.displayMessage({
+              severity: 'success',
+              summary: 'La cuenta ha sido eliminada',
+            });
+            this.accountId = '';
+            this.getAccounts();
+          },
+          error: (err: unknown) => {
+            this.accountId = '';
+            this._alertService.displayMessage({
+              severity: 'error',
+              summary:
+                (err as HttpErrorResponse)?.error?.error ||
+                'Ha ocurrido un error',
+            });
+          }
+        });
     });
   }
 

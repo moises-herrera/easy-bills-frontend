@@ -147,10 +147,11 @@ export class TransactionsComponent {
             severity: 'success',
             summary: 'La transacción ha sido eliminada',
           });
+          this.transactionId = '';
           this.getTransactions();
         },
         error: (err: unknown) => {
-          this.isLoading = false;
+          this.transactionId = '';
           this._alertService.displayMessage({
             severity: 'error',
             summary:

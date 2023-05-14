@@ -144,10 +144,11 @@ export class CategoriesComponent {
             severity: 'success',
             summary: 'La categoría ha sido eliminada',
           });
+          this.categoryId = '';
           this.getCategories();
         },
         error: (err: unknown) => {
-          this.isLoading = false;
+          this.categoryId = '';
           this._alertService.displayMessage({
             severity: 'error',
             summary:
