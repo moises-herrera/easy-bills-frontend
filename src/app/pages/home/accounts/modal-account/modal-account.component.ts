@@ -90,14 +90,6 @@ export class ModalAccountComponent {
   /** If the information is being saved. */
   isSaving = false;
 
-  /** Account form. */
-  accountForm = this._fb.nonNullable.group({
-    name: ['', Validators.required],
-    typeAccount: [0, Validators.required],
-    balance: [0, [Validators.required, Validators.min(0)]],
-    userId: [this._userService.user?.id],
-  });
-
   /** Account types. */
   accountTypes = [
     {
@@ -109,6 +101,14 @@ export class ModalAccountComponent {
       value: FinanceAccountType.Cash,
     },
   ];
+
+  /** Account form. */
+  accountForm = this._fb.nonNullable.group({
+    name: ['', Validators.required],
+    typeAccount: [this.accountTypes[0].value, Validators.required],
+    balance: [0, [Validators.required, Validators.min(0)]],
+    userId: [this._userService.user?.id],
+  });
 
   /**
    * Get account data.
