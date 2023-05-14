@@ -103,22 +103,6 @@ export class ModalTransactionComponent {
   /** Min date value for the created date field. */
   minDate = new Date();
 
-  /** Transaction form. */
-  transactionForm = this._fb.nonNullable.group({
-    amount: [0, [Validators.required, Validators.min(1)]],
-    description: ['', Validators.required],
-    accountId: ['', Validators.required],
-    categoryId: ['', Validators.required],
-    transactionType: [0, Validators.required],
-    createdDate: [new Date(), Validators.required],
-  });
-
-  /** User accounts. */
-  userAccounts$!: Observable<Account[]>;
-
-  /** List of categories. */
-  categories$!: Observable<Category[]>;
-
   /** Transaction types list. */
   transactionTypes = [
     {
@@ -130,6 +114,22 @@ export class ModalTransactionComponent {
       value: TransactionType.Income,
     },
   ];
+
+  /** Transaction form. */
+  transactionForm = this._fb.nonNullable.group({
+    amount: [0, [Validators.required, Validators.min(1)]],
+    description: ['', Validators.required],
+    accountId: ['', Validators.required],
+    categoryId: ['', Validators.required],
+    transactionType: [this.transactionTypes[0].value, Validators.required],
+    createdDate: [new Date(), Validators.required],
+  });
+
+  /** User accounts. */
+  userAccounts$!: Observable<Account[]>;
+
+  /** List of categories. */
+  categories$!: Observable<Category[]>;
 
   /**
    * Get transaction data.
