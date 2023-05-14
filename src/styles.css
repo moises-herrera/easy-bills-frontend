@@ -71,3 +71,7 @@ html, body {
 .confirm-dialog {
   @apply w-1/4 min-w-[380px];
 }
+
+.category-icon {
+  @apply flex w-[40px] h-[40px] rounded-full justify-center items-center;
+}

@@ -45,11 +45,13 @@
       <div class="grid grid-cols-7 items-center">
         <!-- Category -->
         <div class="flex items-center space-x-4 col-span-2">
-          <div
-            class="flex w-[40px] h-[40px] rounded-full justify-center items-center"
-            [style.background-color]="transaction.category.color || '#000'"
-          >
-            <i [ngClass]="transaction.category.icon" class="text-white"></i>
+          <div>
+            <div
+              class="category-icon"
+              [style.background-color]="transaction.category.color || '#000'"
+            >
+              <i [ngClass]="transaction.category.icon" class="text-white"></i>
+            </div>
           </div>
           <div class="font-semibold truncate w-full">
             {{ transaction.category.name }}
@@ -98,9 +100,7 @@
     </article>
   </div>
 
-  <app-no-data
-    *ngIf="!isLoading && !transactions.data?.length"
-  ></app-no-data>
+  <app-no-data *ngIf="!isLoading && !transactions.data?.length"></app-no-data>
 </ng-container>
 
 <app-modal-transaction
