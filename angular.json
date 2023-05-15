@@ -24,7 +24,16 @@
               "node_modules/primeng/resources/primeng.min.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "jspdf",
+              "raf",
+              "core-js",
+              "dompurify",
+              "html2canvas",
+              "rgbcolor",
+              "dom-to-image"
+            ]
           },
           "configurations": {
             "production": {
