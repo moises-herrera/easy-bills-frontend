@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Transaction, TransactionInfo, TransactionType } from 'src/models';
+import { PagedResponse, Transaction, TransactionInfo, TransactionType } from 'src/models';
 
 const baseUrl = `${environment.baseUrl}/transactions`;
 
@@ -19,17 +19,25 @@ export class TransactionService {
   /**
    * Get all the transactions.
    *
+   * @param from The from date.
+   * @param to The to date.
+   * @param pageNumber The page number.
    * @returns List of transactions.
    */
   getTransactions(
     from: string = '',
     to: string = '',
-    limit: number = 0
-  ): Observable<TransactionInfo[]> {
-    const params = new HttpParams().set('from', from).set('to', to).set('limit', limit);
+    pageNumber: number = 1,
+    pageSize: number = 10
+  ): Observable<PagedResponse<TransactionInfo>> {
+    const params = new HttpParams()
+      .set('from', from)
+      .set('to', to)
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
 
     return this._http
-      .get<TransactionInfo[]>(baseUrl, { params })
+      .get<PagedResponse<TransactionInfo>>(baseUrl, { params })
       .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 
