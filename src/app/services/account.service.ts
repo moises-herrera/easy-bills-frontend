@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Account } from 'src/models';
+import { Account, Category, PagedResponse } from 'src/models';
 
 const baseUrl = `${environment.baseUrl}/accounts`;
 
@@ -19,11 +19,20 @@ export class AccountService {
   /**
    * Get all the accounts of the user.
    *
+   * @param to The to date.
+   * @param pageNumber The page number.
    * @returns List of accounts.
    */
-  getAccounts(): Observable<Account[]> {
+  getAccounts(
+    pageNumber: number = 1,
+    pageSize: number = 10
+  ): Observable<PagedResponse<Account>> {
+    const params = new HttpParams()
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
+
     return this._http
-      .get<Account[]>(baseUrl)
+      .get<PagedResponse<Account>>(baseUrl, { params })
       .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 
