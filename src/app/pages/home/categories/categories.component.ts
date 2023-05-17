@@ -16,6 +16,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from 'src/app/services/alert.service';
 import { UserService } from 'src/app/services/user.service';
 import { NoDataComponent } from 'src/app/shared/no-data/no-data.component';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
   selector: 'app-categories',
@@ -30,7 +31,8 @@ import { NoDataComponent } from 'src/app/shared/no-data/no-data.component';
     ModalCategoryComponent,
     MenuModule,
     ConfirmDialogModule,
-    NoDataComponent
+    NoDataComponent,
+    PaginatorModule,
   ],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css'],
@@ -59,6 +61,18 @@ export class CategoriesComponent {
 
   /** Current category id selected. */
   categoryId: string = '';
+
+  /** First row of the list. */
+  first = 0;
+
+  /** Current page number. */
+  pageNumber = 1;
+
+  /** Page size. */
+  pageSize = 10;
+
+  /** Total records. */
+  totalRecords = 0;
 
   /** Options of the menu. */
   options: MenuItem[] = [
@@ -100,8 +114,14 @@ export class CategoriesComponent {
   getCategories(): void {
     this.isLoading = true;
     this.categories$ = this._categoryService
-      .getCategories()
-      .pipe(tap(() => (this.isLoading = false)));
+      .getCategories(this.pageNumber, this.pageSize)
+      .pipe(
+        tap(({ totalRecords }) => {
+          this.totalRecords = totalRecords;
+          this.isLoading = false;
+        }),
+        map(({ data }) => data)
+      );
   }
 
   /**
@@ -158,5 +178,17 @@ export class CategoriesComponent {
         },
       });
     });
+  }
+
+  /**
+   * Handle event when changing the page.
+   *
+   * @param event The event.
+   */
+  onPageChange(event: any): void {
+    this.first = event.first;
+    this.pageNumber = event.page + 1;
+    this.pageSize = event.rows;
+    this.getCategories();
   }
 }

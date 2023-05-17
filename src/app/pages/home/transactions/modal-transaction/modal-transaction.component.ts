@@ -12,7 +12,7 @@ import { TransactionService } from 'src/app/services/transaction.service';
 import { AlertService } from 'src/app/services/alert.service';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { Account, Category, TransactionType } from 'src/models';
 import { AccountService } from 'src/app/services/account.service';
@@ -149,7 +149,7 @@ export class ModalTransactionComponent {
               ...transaction,
               accountId: transaction.account.id,
               categoryId: transaction.category.id,
-              createdDate: new Date(transaction.createdDate)
+              createdDate: new Date(transaction.createdDate),
             });
           },
         });
@@ -160,14 +160,18 @@ export class ModalTransactionComponent {
    * Get user's finance accounts.
    */
   getUserAccounts(): void {
-    this.userAccounts$ = this._accountService.getAccounts();
+    this.userAccounts$ = this._accountService
+      .getAccounts()
+      .pipe(map(({ data }) => data));
   }
 
   /**
    * Get all the categories.
    */
   getAllCategories(): void {
-    this.categories$ = this._categoryService.getCategories();
+    this.categories$ = this._categoryService
+      .getCategories()
+      .pipe(map(({ data }) => data));
   }
 
   /**

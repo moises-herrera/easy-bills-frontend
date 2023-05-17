@@ -22,7 +22,7 @@
   ></button>
 </div>
 
-<div *ngIf="isLoading" class="loading-indicator">
+<div *ngIf="isLoading" class="loading-indicator loading-indicator-section">
   <p-progressSpinner strokeWidth="4"></p-progressSpinner>
 </div>
 
@@ -76,9 +76,15 @@
     </article>
   </div>
 
-  <app-no-data
-    *ngIf="!isLoading && !accounts.data?.length"
-  ></app-no-data>
+  <app-no-data *ngIf="!isLoading && !accounts.data?.length"></app-no-data>
+
+  <p-paginator
+    (onPageChange)="onPageChange($event)"
+    [first]="first"
+    [rows]="pageSize"
+    [totalRecords]="totalRecords"
+    [rowsPerPageOptions]="[10, 20, 30]"
+  ></p-paginator>
 </ng-container>
 
 <app-modal-account

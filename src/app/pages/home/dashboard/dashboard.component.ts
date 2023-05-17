@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DividerModule } from 'primeng/divider';
 import { TransactionInfo, TransactionType } from 'src/models';
 import { TransactionService } from 'src/app/services/transaction.service';
-import { Observable, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { DateHelper } from 'src/helpers';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { NoDataComponent } from 'src/app/shared/no-data/no-data.component';
@@ -50,8 +50,11 @@ export class DashboardComponent implements OnInit {
     const to = new Date().toISOString();
 
     this.recentTransactions$ = this._transactionsService
-      .getTransactions(from, to, 5)
-      .pipe(tap(() => (this.isLoadingRecentTransactions = false)));
+      .getTransactions(from, to, 1, 5)
+      .pipe(
+        tap(() => (this.isLoadingRecentTransactions = false)),
+        map(({ data }) => data)
+      );
   }
 
   /**

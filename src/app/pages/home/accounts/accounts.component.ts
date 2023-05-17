@@ -16,6 +16,7 @@ import { MenuItem } from 'primeng/api';
 import { AlertService } from 'src/app/services/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NoDataComponent } from 'src/app/shared/no-data/no-data.component';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
   selector: 'app-accounts',
@@ -32,6 +33,7 @@ import { NoDataComponent } from 'src/app/shared/no-data/no-data.component';
     MenuModule,
     ConfirmDialogModule,
     NoDataComponent,
+    PaginatorModule,
   ],
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.css'],
@@ -57,6 +59,18 @@ export class AccountsComponent implements OnInit {
 
   /** Current account id selected. */
   accountId: string = '';
+
+  /** First row of the list. */
+  first = 0;
+
+  /** Current page number. */
+  pageNumber = 1;
+
+  /** Page size. */
+  pageSize = 10;
+
+  /** Total records. */
+  totalRecords = 0;
 
   /** Options of the menu. */
   options: MenuItem[] = [
@@ -89,8 +103,14 @@ export class AccountsComponent implements OnInit {
   getAccounts(): void {
     this.isLoading = true;
     this.accounts$ = this._accountService
-      .getAccounts()
-      .pipe(tap(() => (this.isLoading = false)));
+      .getAccounts(this.pageNumber, this.pageSize)
+      .pipe(
+        tap(({ totalRecords }) => {
+          this.totalRecords = totalRecords;
+          this.isLoading = false;
+        }),
+        map(({ data }) => data)
+      );
   }
 
   /**
@@ -127,27 +147,25 @@ export class AccountsComponent implements OnInit {
    */
   deleteAccount(): void {
     this._alertService.displayConfirm(() => {
-      this._accountService
-        .deleteAccount(this.accountId)
-        .subscribe({
-          next: () => {
-            this._alertService.displayMessage({
-              severity: 'success',
-              summary: 'La cuenta ha sido eliminada',
-            });
-            this.accountId = '';
-            this.getAccounts();
-          },
-          error: (err: unknown) => {
-            this.accountId = '';
-            this._alertService.displayMessage({
-              severity: 'error',
-              summary:
-                (err as HttpErrorResponse)?.error?.error ||
-                'Ha ocurrido un error',
-            });
-          }
-        });
+      this._accountService.deleteAccount(this.accountId).subscribe({
+        next: () => {
+          this._alertService.displayMessage({
+            severity: 'success',
+            summary: 'La cuenta ha sido eliminada',
+          });
+          this.accountId = '';
+          this.getAccounts();
+        },
+        error: (err: unknown) => {
+          this.accountId = '';
+          this._alertService.displayMessage({
+            severity: 'error',
+            summary:
+              (err as HttpErrorResponse)?.error?.error ||
+              'Ha ocurrido un error',
+          });
+        },
+      });
     });
   }
 
@@ -159,5 +177,17 @@ export class AccountsComponent implements OnInit {
    */
   isBankAccount(typeAccount: FinanceAccountType): boolean {
     return FinanceAccountType.Bank === typeAccount;
+  }
+
+  /**
+   * Handle event when changing the page.
+   *
+   * @param event The event.
+   */
+  onPageChange(event: any): void {
+    this.first = event.first;
+    this.pageNumber = event.page + 1;
+    this.pageSize = event.rows;
+    this.getAccounts();
   }
 }

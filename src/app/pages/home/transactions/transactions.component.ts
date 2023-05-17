@@ -17,6 +17,7 @@ import { ModalTransactionComponent } from './modal-transaction/modal-transaction
 import jsPDF from 'jspdf';
 import domToImage from 'dom-to-image';
 import { NoDataComponent } from 'src/app/shared/no-data/no-data.component';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
   selector: 'app-transactions',
@@ -32,6 +33,7 @@ import { NoDataComponent } from 'src/app/shared/no-data/no-data.component';
     ModalTransactionComponent,
     ConfirmDialogModule,
     NoDataComponent,
+    PaginatorModule,
   ],
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.css'],
@@ -61,6 +63,18 @@ export class TransactionsComponent {
 
   /** Current transaction id selected. */
   transactionId: string = '';
+
+  /** First row of the list. */
+  first = 0;
+
+  /** Current page number. */
+  pageNumber = 1;
+
+  /** Page size. */
+  pageSize = 10;
+
+  /** Total records. */
+  totalRecords = 0;
 
   /** Options of the menu. */
   options: MenuItem[] = [
@@ -103,8 +117,14 @@ export class TransactionsComponent {
   getTransactions(): void {
     this.isLoading = true;
     this.transactions$ = this._transactionService
-      .getTransactions()
-      .pipe(tap(() => (this.isLoading = false)));
+      .getTransactions('', '', this.pageNumber, this.pageSize)
+      .pipe(
+        tap(({ totalRecords }) => {
+          this.totalRecords = totalRecords;
+          this.isLoading = false;
+        }),
+        map(({ data }) => data)
+      );
   }
 
   /**
@@ -194,7 +214,19 @@ export class TransactionsComponent {
         pdf.setFontSize(24);
         pdf.setTextColor('#131523');
         pdf.addImage(result, 'PNG', 25, 185, width, height);
-        pdf.save('file_name' + '.pdf');
+        pdf.save('lista_transacciones.pdf');
       });
+  }
+
+  /**
+   * Handle event when changing the page.
+   *
+   * @param event The event.
+   */
+  onPageChange(event: any): void {
+    this.first = event.first;
+    this.pageNumber = event.page + 1;
+    this.pageSize = event.rows;
+    this.getTransactions();
   }
 }
