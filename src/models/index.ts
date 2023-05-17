@@ -11,3 +11,4 @@ export * from './transaction-info';
 export * from './account';
 export * from './category';
 export * from './time-period';
+export * from './paged-response';
