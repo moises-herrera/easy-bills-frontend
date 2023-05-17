@@ -64,6 +64,10 @@ html, body {
   @apply w-full h-full flex justify-center items-center;
 }
 
+.loading-indicator-section {
+  height: calc(100vh - 180px);
+}
+
 .modal {
   @apply w-[500px] h-auto;
 }
