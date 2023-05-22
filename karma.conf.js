@@ -11,7 +11,6 @@ module.exports = function (config) {
       require("karma-jasmine-html-reporter"),
       require("karma-coverage"),
       require("@angular-devkit/build-angular/plugins/karma"),
-      require("karma-time-stats-reporter"),
     ],
     client: {
       jasmine: {
@@ -20,28 +19,19 @@ module.exports = function (config) {
         // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
         // for example, you can disable the random execution with `random: false`
         // or set a specific seed with `seed: 4321`
-        random: false,
       },
-      clearContext: false,
+      clearContext: false, // leave Jasmine Spec Runner output visible in browser
+    },
+    jasmineHtmlReporter: {
+      suppressAll: true, // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require("path").join(__dirname, "./coverage/easy-bills-fronten"),
+      dir: require("path").join(__dirname, "./coverage/easy-bills-frontend"),
       subdir: ".",
       reporters: [{ type: "html" }, { type: "text-summary" }],
     },
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    browsers: ["Chrome", "ChromeHeadless", "ChromeHeadlessCI"],
-    browserConsoleLogOptions: {
-      level: "log",
-    },
-    customLaunchers: {
-      ChromeHeadlessCI: {
-        base: "ChromeHeadless",
-        flags: ["--no-sandbox"],
-      },
-    },
+    reporters: ["progress", "kjhtml"],
+    browsers: ["Chrome"],
+    restartOnFileChange: true,
   });
 };
