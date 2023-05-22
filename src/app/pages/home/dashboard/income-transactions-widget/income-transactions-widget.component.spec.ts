@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IncomeTransactionsWidgetComponent } from './income-transactions-widget.component';
+import { TransactionService } from 'src/app/services/transaction.service';
+import { MockTransactionService } from 'src/mocks';
 
 describe('IncomeTransactionsWidgetComponent', () => {
   let component: IncomeTransactionsWidgetComponent;
@@ -8,7 +10,10 @@ describe('IncomeTransactionsWidgetComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [IncomeTransactionsWidgetComponent]
+      imports: [IncomeTransactionsWidgetComponent],
+      providers: [
+        { provide: TransactionService, useClass: MockTransactionService }
+      ]
     });
     fixture = TestBed.createComponent(IncomeTransactionsWidgetComponent);
     component = fixture.componentInstance;
