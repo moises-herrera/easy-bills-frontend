@@ -10,7 +10,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^16.0.1",
+    "@angular/animations": "^16.0.2",
     "@angular/common": "^16.0.1",
     "@angular/compiler": "^16.0.1",
     "@angular/core": "^16.0.2",
@@ -23,7 +23,7 @@
     "dom-to-image": "^2.6.0",
     "jspdf": "^2.5.1",
     "primeicons": "^6.0.1",
-    "primeng": "^16.0.0-rc.1",
+    "primeng": "^16.0.0-rc.2",
     "rxjs": "~7.8.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
