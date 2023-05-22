@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Account, Category, PagedResponse } from 'src/models';
+import { Account, PagedResponse } from 'src/models';
 
 const baseUrl = `${environment.baseUrl}/accounts`;
 
