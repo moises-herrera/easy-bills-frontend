@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.0.3",
-    "@angular/cli": "~16.0.2",
+    "@angular/cli": "~16.0.3",
     "@angular/compiler-cli": "^16.0.3",
     "@types/dom-to-image": "^2.6.4",
     "@types/jasmine": "~4.3.2",
