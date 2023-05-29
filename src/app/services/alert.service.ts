@@ -20,7 +20,7 @@ export class AlertService {
    * @param message Message data.
    */
   displayMessage(message: Message): void {
-    this._messageService.add(message);
+    this._messageService.add({ life: 5000, ...message });
   }
 
   /**
