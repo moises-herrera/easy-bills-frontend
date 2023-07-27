@@ -24,7 +24,7 @@
     "dom-to-image": "^2.6.0",
     "jspdf": "^2.5.1",
     "primeicons": "^6.0.1",
-    "primeng": "^16.0.0",
+    "primeng": "^16.1.0",
     "rxjs": "~7.8.1",
     "tslib": "^2.5.3",
     "zone.js": "~0.13.1"
