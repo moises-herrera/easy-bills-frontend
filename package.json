@@ -19,7 +19,7 @@
     "@angular/platform-browser": "^16.1.7",
     "@angular/platform-browser-dynamic": "^16.1.7",
     "@angular/router": "^16.1.7",
-    "@ngneat/error-tailor": "^4.0.0",
+    "@ngneat/error-tailor": "^4.1.1",
     "chart.js": "^4.3.0",
     "dom-to-image": "^2.6.0",
     "jspdf": "^2.5.1",
