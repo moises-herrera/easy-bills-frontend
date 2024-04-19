@@ -18,7 +18,7 @@
     "@angular/forms": "^17.3.3",
     "@angular/platform-browser": "^17.3.3",
     "@angular/platform-browser-dynamic": "^17.3.3",
-    "@angular/router": "^17.3.3",
+    "@angular/router": "^17.3.5",
     "@ngneat/error-tailor": "^5.0.1",
     "chart.js": "^4.4.2",
     "dom-to-image": "^2.6.0",
