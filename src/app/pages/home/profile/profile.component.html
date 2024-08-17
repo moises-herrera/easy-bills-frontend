@@ -60,7 +60,7 @@
       type="button"
       pButton
       label="Confirmar email"
-      class="mb-5 w-[200px] p-button-rounded p-button-outlined p-button-info"
+      class="mb-5 w-[200px] p-button-rounded p-button-outlined p-button-primary"
       [loading]="isSendingEmailConfirmation"
       [disabled]="isSendingEmailConfirmation"
       (click)="sendEmailConfirmation()"
@@ -71,7 +71,7 @@
         type="submit"
         pButton
         label="Guardar"
-        class="form-button w-[200px] p-button-rounded p-button-info"
+        class="form-button w-[200px] p-button-rounded p-button-primary"
         [loading]="isSaving"
         [disabled]="profileForm.invalid || isSaving"
       ></button>
