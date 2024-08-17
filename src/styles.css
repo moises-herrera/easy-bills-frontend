@@ -1,16 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer tailwind-base, primeng, tailwind-utilities;
 
-@import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer primeng;
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
 @import "primeicons/primeicons.css";
 
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap");
 
-html, body {
-  font-family: 'Source Sans Pro', sans-serif;
+html,
+body {
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .auth-section {
@@ -37,7 +45,8 @@ html, body {
   @apply absolute w-[380px] right-4 bottom-0 z-[2000];
 }
 
-.p-password, .p-password input {
+.p-password,
+.p-password input {
   width: 100% !important;
 }
 
@@ -57,7 +66,7 @@ html, body {
 }
 
 .p-progress-spinner-circle {
-  stroke: #3B82F6 !important;
+  stroke: #3b82f6 !important;
 }
 
 .loading-indicator {
@@ -78,4 +87,12 @@ html, body {
 
 .category-icon {
   @apply flex w-[40px] h-[40px] rounded-full justify-center items-center;
+}
+
+.p-toast-message-content {
+  border-width: 0px !important;
+}
+
+.p-toast-message-error {
+  background: rgb(255, 231, 230) !important;
 }
