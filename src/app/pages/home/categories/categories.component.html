@@ -1,6 +1,6 @@
 <div class="section-content">
   <h4 class="section-title">Categorías</h4>
-  <p-divider></p-divider>
+  <p-divider />
 
   <span class="p-input-icon-left">
     <i class="pi pi-search"></i>
@@ -22,49 +22,55 @@
   ></button>
 </div>
 
-<div *ngIf="isLoading" class="loading-indicator loading-indicator-section">
-  <p-progressSpinner strokeWidth="4"></p-progressSpinner>
-</div>
-
-<ng-container *ngIf="{ data: (categories$ | async) } as categories">
-  <div *ngIf="categories.data?.length">
-    <article *ngFor="let category of categories.data" class="section-content">
-      <div class="flex justify-between items-center flex-wrap">
-        <div class="flex items-center space-x-4">
-          <div
-            class="category-icon"
-            [style.background-color]="category.color || '#000'"
-          >
-            <i [ngClass]="category.icon" class="text-white"></i>
-          </div>
-          <div class="font-semibold truncate">{{ category.name }}</div>
-        </div>
-        <div>
-          <span class="text-gray-400 truncate">{{ category.description }}</span>
-        </div>
-        <div>
-          <ng-container *ngIf="category.userId === user.id">
-            <button
-              #btn
-              type="button"
-              pButton
-              icon="pi pi-ellipsis-v"
-              class="p-button-secondary p-button-text p-button-sm"
-              (click)="menu.toggle($event)"
-            ></button>
-            <p-menu
-              #menu
-              [model]="options"
-              [popup]="true"
-              (click)="onClickCategory(category.id)"
-            ></p-menu>
-          </ng-container>
-        </div>
-      </div>
-    </article>
+@if (isLoading) {
+  <div class="loading-indicator loading-indicator-section">
+    <p-progressSpinner strokeWidth="4" />
   </div>
+}
 
-  <app-no-data *ngIf="!isLoading && !categories.data?.length"></app-no-data>
+@if ({ data: (categories$ | async) }; as categories) {
+  @if (categories.data?.length) {
+    @for (category of categories.data; track category.id) {
+      <article class="section-content">
+        <div class="flex justify-between items-center flex-wrap">
+          <div class="flex items-center space-x-4">
+            <div
+              class="category-icon"
+              [style.background-color]="category.color || '#000'"
+            >
+              <i [ngClass]="category.icon" class="text-white"></i>
+            </div>
+            <div class="font-semibold truncate">{{ category.name }}</div>
+          </div>
+          <div>
+            <span class="text-gray-400 truncate">{{ category.description }}</span>
+          </div>
+          <div>
+            @if (category.userId === user.id) {
+              <button
+                #btn
+                type="button"
+                pButton
+                icon="pi pi-ellipsis-v"
+                class="p-button-secondary p-button-text p-button-sm"
+                (click)="menu.toggle($event)"
+              ></button>
+              <p-menu
+                #menu
+                [model]="options"
+                [popup]="true"
+                (click)="onClickCategory(category.id)"
+              />
+            }
+          </div>
+        </div>
+      </article>
+    }
+  }
+
+  @if (!isLoading && !categories.data?.length) {
+    <app-no-data />
+  }
 
   <p-paginator
     (onPageChange)="onPageChange($event)"
@@ -72,14 +78,15 @@
     [rows]="pageSize"
     [totalRecords]="totalRecords"
     [rowsPerPageOptions]="[10, 20, 30]"
-  ></p-paginator>
-</ng-container>
+  />
+}
+
 
 <app-modal-category
   [(isVisible)]="isModalVisible"
   [(categoryId)]="categoryId"
   (reloadData)="getCategories()"
-></app-modal-category>
+/>
 
 <p-confirmDialog
   [styleClass]="'confirm-dialog'"
@@ -87,4 +94,4 @@
   rejectLabel="No"
   acceptButtonStyleClass="p-button-primary"
   rejectButtonStyleClass="p-button-danger"
-></p-confirmDialog>
+/>
