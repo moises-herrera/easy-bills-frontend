@@ -4,58 +4,64 @@
 
 <section class="flex">
   <div class="section-content w-1/2 min-h-[578px] h-auto">
-    <app-spending-transactions-widget></app-spending-transactions-widget>
+    <app-spending-transactions-widget />
   </div>
 
   <div class="section-content w-1/2 min-h-[578px] h-auto">
-    <app-income-transactions-widget></app-income-transactions-widget>
+    <app-income-transactions-widget />
   </div>
 </section>
 
 <section class="section-content">
   <h4 class="section-title">Últimos movimientos</h4>
-  <p-divider></p-divider>
+  <p-divider />
 
   <div class="flex flex-col w-full">
-    <div *ngIf="isLoadingRecentTransactions" class="loading-indicator h-full">
-      <p-progressSpinner strokeWidth="4"></p-progressSpinner>
-    </div>
+    @if (isLoadingRecentTransactions) {
+      <div class="loading-indicator h-full">
+        <p-progressSpinner strokeWidth="4" />
+      </div>
+    }
 
-    <ng-container
-      *ngIf="{ data: recentTransactions$ | async } as recentTransactions"
-    >
-      <table *ngIf="recentTransactions.data?.length" class="w-full">
-        <thead>
-          <tr class="text-left">
-            <th class="table-header">Fecha</th>
-            <th class="table-header">Descripción</th>
-            <th class="table-header">Cuenta</th>
-            <th class="table-header">Monto</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let transaction of recentTransactions.data">
-            <td class="table-cell">{{ transaction.createdDate | date }}</td>
-            <td class="table-cell">{{ transaction.description }}</td>
-            <td class="table-cell">{{ transaction.account.name }}</td>
-            <td class="table-cell">
-              <span
-                [ngClass]="
-                  !isIncome(transaction.transactionType)
-                    ? 'text-red-500'
-                    : 'text-green-500'
-                "
-                >{{ !isIncome(transaction.transactionType) ? "-" : ""
-                }}{{ transaction.amount | number }} COP</span
-              >
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    @if ({ data: recentTransactions$ | async }; as recentTransactions) {
+      @if (recentTransactions.data?.length) {
+        <table class="w-full">
+          <thead>
+            <tr class="text-left">
+              <th class="table-header">Fecha</th>
+              <th class="table-header">Descripción</th>
+              <th class="table-header">Cuenta</th>
+              <th class="table-header">Monto</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (transaction of recentTransactions.data; track transaction.id) {
+              <tr>
+                <td class="table-cell">{{ transaction.createdDate | date }}</td>
+                <td class="table-cell">{{ transaction.description }}</td>
+                <td class="table-cell">{{ transaction.account.name }}</td>
+                <td class="table-cell">
+                  <span
+                    [ngClass]="
+                      !isIncome(transaction.transactionType)
+                        ? 'text-red-500'
+                        : 'text-green-500'
+                    "
+                    >{{ !isIncome(transaction.transactionType) ? "-" : ""
+                    }}{{ transaction.amount | number }} COP</span
+                  >
+                </td>
+              </tr>
+            }
 
-      <app-no-data
-        *ngIf="!isLoadingRecentTransactions && !recentTransactions.data?.length"
-      ></app-no-data>
-    </ng-container>
+          </tbody>
+        </table>
+      }
+
+
+      @if (!isLoadingRecentTransactions && !recentTransactions.data?.length) {
+        <app-no-data />
+      }
+    }
   </div>
 </section>
