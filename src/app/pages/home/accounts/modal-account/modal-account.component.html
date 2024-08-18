@@ -8,11 +8,11 @@
   (onShow)="getAccountData()"
   (onHide)="hideModal()"
 >
-  <div *ngIf="isLoading; else form" class="loading-indicator">
-    <p-progressSpinner strokeWidth="4"></p-progressSpinner>
-  </div>
-
-  <ng-template #form>
+  @if (isLoading) {
+    <div class="loading-indicator">
+      <p-progressSpinner strokeWidth="4" />
+    </div>
+  } @else {
     <form
       [formGroup]="accountForm"
       (ngSubmit)="saveAccount()"
@@ -31,7 +31,7 @@
           optionLabel="label"
           optionValue="value"
           [styleClass]="'w-full'"
-        ></p-dropdown>
+        />
       </div>
 
       <div class="form-control">
@@ -48,5 +48,5 @@
         [disabled]="accountForm.invalid || isSaving"
       ></button>
     </form>
-  </ng-template>
+  }
 </p-dialog>
