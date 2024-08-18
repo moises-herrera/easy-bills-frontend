@@ -3,37 +3,32 @@
     <h3 class="text-center section-title pb-3">Confirmación de email</h3>
     <hr />
 
-    <div
-      *ngIf="!isLoading; else loading"
-      class="flex flex-col justify-center items-center"
-    >
-      <ng-container *ngIf="!emailToken; else emailVerified">
-        <img
-          class="max-w-[80%] p-5"
-          src="assets/email-sent.svg"
-          alt="mailbox"
-        />
-        <p class="text-lg text-center">
-          Te hemos enviado un link a {{ userEmail }} para confirmar tu email.
-        </p>
-      </ng-container>
-
-      <ng-template #emailVerified>
-        <img
-          class="max-w-[75%] p-5"
-          src="assets/email-confirm.svg"
-          alt="mailbox"
-        />
-        <p class="text-lg text-center">
-          Tu cuenta de usuario ha sido verificada.
-        </p>
-      </ng-template>
-    </div>
-
-    <ng-template #loading>
-      <div class="flex flex-col justify-center items-center h-full">
-        <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+    @if (!isLoading) {
+      <div class="flex flex-col justify-center items-center">
+        @if (!emailToken) {
+          <img
+            class="max-w-[80%] p-5"
+            src="assets/email-sent.svg"
+            alt="mailbox"
+          />
+          <p class="text-lg text-center">
+            Te hemos enviado un link a {{ userEmail }} para confirmar tu email.
+          </p>
+        } @else {
+          <img
+            class="max-w-[75%] p-5"
+            src="assets/email-confirm.svg"
+            alt="mailbox"
+          />
+          <p class="text-lg text-center">
+            Tu cuenta de usuario ha sido verificada.
+          </p>
+        }
       </div>
-    </ng-template>
+    } @else {
+      <div class="flex flex-col justify-center items-center h-full">
+        <p-progressSpinner strokeWidth="4" />
+      </div>
+    }
   </article>
 </section>
