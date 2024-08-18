@@ -1,12 +1,14 @@
 <div class="section-content">
   <h4 class="section-title">Información personal</h4>
-  <p-divider></p-divider>
+  <p-divider />
 
-  <p-messages *ngIf="!user.isEmailVerified" severity="warn">
-    <ng-template pTemplate>
-      <div>Por favor, confirma tu correo electrónico.</div>
-    </ng-template>
-  </p-messages>
+  @if (!user.isEmailVerified) {
+    <p-messages severity="warn">
+      <ng-template pTemplate>
+        <div>Por favor, confirma tu correo electrónico.</div>
+      </ng-template>
+    </p-messages>
+  }
 
   <form
     [formGroup]="profileForm"
@@ -55,16 +57,17 @@
       </div>
     </fieldset>
 
-    <button
-      *ngIf="!user.isEmailVerified"
-      type="button"
-      pButton
-      label="Confirmar email"
-      class="mb-5 w-[200px] p-button-rounded p-button-outlined p-button-primary"
-      [loading]="isSendingEmailConfirmation"
-      [disabled]="isSendingEmailConfirmation"
-      (click)="sendEmailConfirmation()"
-    ></button>
+    @if (!user.isEmailVerified) {
+      <button
+        type="button"
+        pButton
+        label="Confirmar email"
+        class="mb-5 w-[200px] p-button-rounded p-button-outlined p-button-primary"
+        [loading]="isSendingEmailConfirmation"
+        [disabled]="isSendingEmailConfirmation"
+        (click)="sendEmailConfirmation()"
+      ></button>
+    }
 
     <div class="flex space-x-4">
       <button
