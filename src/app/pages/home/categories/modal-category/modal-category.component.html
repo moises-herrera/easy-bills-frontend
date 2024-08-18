@@ -8,14 +8,11 @@
   (onShow)="getCategoryData()"
   (onHide)="hideModal()"
 >
-  <div
-    *ngIf="isLoading; else form"
-    class="loading-indicator"
-  >
-    <p-progressSpinner strokeWidth="4"></p-progressSpinner>
-  </div>
-
-  <ng-template #form>
+  @if (isLoading) {
+    <div class="loading-indicator">
+      <p-progressSpinner strokeWidth="4" />
+    </div>
+  } @else {
     <form
       [formGroup]="categoryForm"
       (ngSubmit)="saveCategory()"
@@ -28,7 +25,7 @@
 
       <div class="form-control">
         <label>Color</label>
-        <p-colorPicker formControlName="color"></p-colorPicker>
+        <p-colorPicker formControlName="color" />
       </div>
 
       <div class="form-control">
@@ -50,5 +47,5 @@
         [disabled]="categoryForm.invalid || isSaving"
       ></button>
     </form>
-  </ng-template>
+  }
 </p-dialog>

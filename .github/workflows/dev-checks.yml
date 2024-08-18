@@ -16,7 +16,7 @@ jobs:
           node-version: '20.10.0'
 
       - name: Install dependencies
-        run: npm i
+        run: npm i --legacy-peer-deps
 
       - name: Build project
         run: npm run build
@@ -31,7 +31,7 @@ jobs:
           node-version: '20.10.0'
 
       - name: Install dependencies
-        run: npm i
+        run: npm i --legacy-peer-deps
 
       - name: Run tests
         run: npm run test-ci

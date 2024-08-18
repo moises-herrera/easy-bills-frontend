@@ -9,12 +9,15 @@
     <span class="text-2xl font-bold">Easy Bills</span>
   </a>
   <ul>
-    <li *ngFor="let item of links" class="sidebar-item">
-      <a [routerLink]="item.url" routerLinkActive="sidebar-item-active">
-        <i [ngClass]="item.icon || ''"></i>
-        <span>{{ item.title }}</span>
-      </a>
-    </li>
+    @for (item of links; track item.url) {
+      <li class="sidebar-item">
+        <a [routerLink]="item.url" routerLinkActive="sidebar-item-active">
+          <i [ngClass]="item.icon || ''"></i>
+          <span>{{ item.title }}</span>
+        </a>
+      </li>
+    }
+
     <li class="sidebar-item cursor-pointer">
       <a (click)="logout()">
         <i class="fa-solid fa-arrow-right-from-bracket"></i>

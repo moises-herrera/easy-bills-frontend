@@ -1,10 +1,8 @@
-<ng-container
-  *ngIf="
-    !isLoading &&
-    spendingTransactionsData &&
-    spendingTransactionsData.datasets[0].data?.length > 0
-  "
->
+@if (
+  !isLoading &&
+  spendingTransactionsData &&
+  spendingTransactionsData.datasets[0].data?.length > 0
+) {
   <div class="text-right">
     <button
       type="button"
@@ -13,7 +11,7 @@
       class="p-button-secondary p-button-text p-button-sm"
       (click)="menuSpending.toggle($event)"
     ></button>
-    <p-menu #menuSpending [model]="options" [popup]="true"></p-menu>
+    <p-menu #menuSpending [model]="options" [popup]="true" />
   </div>
 
   <p-chart
@@ -22,25 +20,28 @@
     [options]="spendingOptions"
     [responsive]="true"
     [height]="'500px'"
-  ></p-chart>
-</ng-container>
+  />
+}
 
-<div *ngIf="isLoading" class="loading-indicator h-full">
-  <p-progressSpinner strokeWidth="4"></p-progressSpinner>
-</div>
+@if (isLoading) {
+  <div class="loading-indicator h-full">
+    <p-progressSpinner strokeWidth="4" />
+  </div>
+}
 
-<app-no-data
-  *ngIf="
-    !isLoading &&
-    spendingTransactionsData &&
-    !spendingTransactionsData.datasets[0].data?.length
-  "
-  imageSrc="assets/pie-chart.svg"
-  message="No se encontraron gastos registrados."
-></app-no-data>
+@if (
+  !isLoading &&
+  spendingTransactionsData &&
+  !spendingTransactionsData.datasets[0].data?.length
+) {
+  <app-no-data
+    imageSrc="assets/pie-chart.svg"
+    message="No se encontraron gastos registrados."
+  />
+}
 
 <app-widget-settings
   [(isVisible)]="isSettingsModalVisible"
   [widgetType]="widgetType.SpendingByCategory"
   (periodSelected)="onPeriodSelected($event)"
-></app-widget-settings>
+/>

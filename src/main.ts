@@ -4,7 +4,11 @@ import { provideRouter } from '@angular/router';
 import { appRoutes } from './app/app.routes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { importProvidersFrom } from '@angular/core';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { provideErrorTailorConfig } from '@ngneat/error-tailor';
 import { AuthInterceptor } from './app/core/auth.interceptor';
@@ -13,7 +17,6 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(appRoutes),
     importProvidersFrom(BrowserAnimationsModule),
-    importProvidersFrom(HttpClientModule),
     provideErrorTailorConfig({
       errors: {
         useValue: {
@@ -31,7 +34,8 @@ bootstrapApplication(AppComponent, {
       useClass: AuthInterceptor,
       multi: true,
     },
+    provideHttpClient(withInterceptorsFromDi()),
     MessageService,
-    ConfirmationService
+    ConfirmationService,
   ],
 }).catch((err) => console.error(err));

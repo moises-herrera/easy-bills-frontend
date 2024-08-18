@@ -21,10 +21,10 @@
         optionLabel="name"
         optionValue="value"
         [styleClass]="'w-full'"
-      ></p-dropdown>
+      />
     </div>
 
-    <ng-container *ngIf="period === 'custom'">
+    @if (period === 'custom') {
       <div class="form-control">
         <label>Desde</label>
         <p-calendar
@@ -32,7 +32,7 @@
           formControlName="startDate"
           [minDate]="minDate"
           [styleClass]="'w-full'"
-        ></p-calendar>
+        />
       </div>
 
       <div class="form-control">
@@ -42,9 +42,9 @@
           formControlName="endDate"
           [minDate]="minDate"
           [styleClass]="'w-full'"
-        ></p-calendar>
+        />
       </div>
-    </ng-container>
+    }
 
     <button
       type="submit"

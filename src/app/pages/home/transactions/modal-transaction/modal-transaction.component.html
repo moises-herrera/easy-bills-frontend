@@ -8,11 +8,11 @@
   (onShow)="getTransactionData()"
   (onHide)="hideModal()"
 >
-  <div *ngIf="isLoading; else form" class="loading-indicator">
-    <p-progressSpinner strokeWidth="4"></p-progressSpinner>
-  </div>
-
-  <ng-template #form>
+  @if (isLoading) {
+    <div class="loading-indicator">
+      <p-progressSpinner strokeWidth="4" />
+    </div>
+  } @else {
     <form
       [formGroup]="transactionForm"
       (ngSubmit)="saveTransaction()"
@@ -41,7 +41,7 @@
           optionLabel="name"
           optionValue="id"
           [styleClass]="'w-full'"
-        ></p-dropdown>
+        />
       </div>
 
       <div class="form-control">
@@ -52,20 +52,20 @@
           optionLabel="name"
           optionValue="id"
           [styleClass]="'w-full'"
-        ></p-dropdown>
+        />
       </div>
 
       <div class="form-control gap-3">
         <span>Tipo de transacción</span>
-        <div *ngFor="let type of transactionTypes">
+        @for (type of transactionTypes; track type.value) {
           <p-radioButton
             inputId="{{ type.value }}"
             name="transactionType"
             [value]="type.value"
             formControlName="transactionType"
-          ></p-radioButton>
+          />
           <label [for]="type.value" class="ml-2">{{ type.name }}</label>
-        </div>
+        }
       </div>
 
       <div class="form-control">
@@ -73,7 +73,7 @@
         <p-calendar
           formControlName="createdDate"
           [styleClass]="'w-full'"
-        ></p-calendar>
+        />
       </div>
 
       <button
@@ -84,6 +84,6 @@
         [loading]="isSaving"
         [disabled]="transactionForm.invalid || isSaving"
       ></button>
-    </form>
-  </ng-template>
+  </form>
+  }
 </p-dialog>
