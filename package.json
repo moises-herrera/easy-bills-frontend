@@ -32,7 +32,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.12",
     "@angular/cli": "~18.2.1",
-    "@angular/compiler-cli": "^18.2.8",
+    "@angular/compiler-cli": "^18.2.12",
     "@types/body-parser": "^1.19.5",
     "@types/dom-to-image": "^2.6.7",
     "@types/jasmine": "~5.1.4",
